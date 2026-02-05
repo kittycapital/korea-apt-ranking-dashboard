@@ -2,7 +2,7 @@ name: Update District Rankings
 
 on:
   schedule:
-    - cron: '0 22 * * *'  # 매일 오전 7시 KST
+    - cron: '0 18 * * *'  # 매일 새벽 3시 KST
   workflow_dispatch:
 
 jobs:
