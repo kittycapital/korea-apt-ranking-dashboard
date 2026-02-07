@@ -24,8 +24,9 @@ DATA_DIR = 'data'
 MIN_AREA = 59
 
 # API 호출 간 대기 (초) — 레이트 리밋 방지
-DELAY_PER_REQUEST = 0.15
-DELAY_PER_REGION = 0.5
+DELAY_PER_REQUEST = 0.5    # 매 요청 후 대기
+DELAY_PER_REGION = 1.0     # 지역 완료 후 추가 대기
+RETRY_BASE_DELAY = 10      # 429 에러 시 기본 대기 (10, 20, 40, 80, 160초 백오프)
 
 # ── 전국 지역코드 (서울 + 전국) ──
 REGIONS = {
@@ -182,26 +183,43 @@ def get_months(n):
     return sorted(months)
 
 
-def fetch(code, ym):
-    """단일 API 호출 (레이트 리밋 대기 포함)"""
+def fetch(code, ym, retries=5):
+    """단일 API 호출 (429 레이트 리밋 자동 재시도)"""
     params = {
         'serviceKey': API_KEY, 'LAWD_CD': code,
         'DEAL_YMD': ym, 'pageNo': '1', 'numOfRows': '9999'
     }
-    try:
-        r = requests.get(BASE_URL, params=params, timeout=30)
-        r.raise_for_status()
-        # API 에러 체크
-        rc = re.search(r'<resultCode>(\d+)</resultCode>', r.text)
-        rm = re.search(r'<resultMsg>([^<]+)</resultMsg>', r.text)
-        if rc and rc.group(1) not in ('00', '000'):
-            print(f"  ⚠️ API Error [{code}/{ym}]: {rc.group(1)} - {rm.group(1) if rm else 'unknown'}")
+    for attempt in range(retries):
+        try:
+            r = requests.get(BASE_URL, params=params, timeout=30)
+            # 429 Too Many Requests → 대기 후 재시도
+            if r.status_code == 429:
+                wait = RETRY_BASE_DELAY * (2 ** attempt)  # 10, 20, 40, 80, 160초
+                print(f"  ⏳ 429 Rate limit [{code}/{ym}] → {wait}초 대기 (재시도 {attempt+1}/{retries})")
+                time.sleep(wait)
+                continue
+            r.raise_for_status()
+            # API 에러 체크
+            rc = re.search(r'<resultCode>(\d+)</resultCode>', r.text)
+            rm = re.search(r'<resultMsg>([^<]+)</resultMsg>', r.text)
+            if rc and rc.group(1) not in ('00', '000'):
+                print(f"  ⚠️ API Error [{code}/{ym}]: {rc.group(1)} - {rm.group(1) if rm else 'unknown'}")
+                return []
+            time.sleep(DELAY_PER_REQUEST)
+            return parse(r.text, code)
+        except requests.exceptions.HTTPError as e:
+            if '429' in str(e):
+                wait = RETRY_BASE_DELAY * (2 ** attempt)
+                print(f"  ⏳ 429 Rate limit [{code}/{ym}] → {wait}초 대기 (재시도 {attempt+1}/{retries})")
+                time.sleep(wait)
+                continue
+            print(f"  ❌ Request failed [{code}/{ym}]: {e}")
             return []
-        time.sleep(DELAY_PER_REQUEST)
-        return parse(r.text, code)
-    except Exception as e:
-        print(f"  ❌ Request failed [{code}/{ym}]: {e}")
-        return []
+        except Exception as e:
+            print(f"  ❌ Request failed [{code}/{ym}]: {e}")
+            return []
+    print(f"  ❌ 재시도 초과 [{code}/{ym}]")
+    return []
 
 
 def parse(xml_text, code):
@@ -269,7 +287,7 @@ def fetch_all_recent(months_6):
     for i, (code, (s, g)) in enumerate(REGIONS.items(), 1):
         for m in months_6:
             recent.extend(fetch(code, m))
-        if i % 20 == 0:
+        if i % 10 == 0:
             print(f"  [{i}/{total}] {s} {g}...")
             time.sleep(DELAY_PER_REGION)
     print(f"  → 총 {len(recent)}건 수집 완료\n")
@@ -285,7 +303,7 @@ def fetch_history(codes_needed, months_extra):
         for m in months_extra:
             history.extend(fetch(code, m))
         done += 1
-        if done % 10 == 0:
+        if done % 5 == 0:
             print(f"  [{done}/{len(codes_needed)}]...")
             time.sleep(DELAY_PER_REGION)
     print(f"  → {len(history)}건 추가 수집\n")
