@@ -1,0 +1,28 @@
+name: Update Apartment Dashboards
+
+on:
+  schedule:
+    - cron: '0 18 * * *'  # 매일 새벽 3시 KST (18:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  update-all:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install requests
+      - name: Fetch data and generate dashboards
+        env:
+          MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: python fetch_all.py
+      - name: Commit and push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/ index.html seoul.html
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update dashboards $(date +'%Y-%m-%d')" && git push)
