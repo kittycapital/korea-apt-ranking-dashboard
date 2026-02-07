@@ -194,7 +194,7 @@ def fetch(code, ym):
         # API 에러 체크
         rc = re.search(r'<resultCode>(\d+)</resultCode>', r.text)
         rm = re.search(r'<resultMsg>([^<]+)</resultMsg>', r.text)
-        if rc and rc.group(1) != '00':
+        if rc and rc.group(1) not in ('00', '000'):
             print(f"  ⚠️ API Error [{code}/{ym}]: {rc.group(1)} - {rm.group(1) if rm else 'unknown'}")
             return []
         time.sleep(DELAY_PER_REQUEST)
@@ -864,14 +864,14 @@ def main():
     test_url = f"{BASE_URL}?serviceKey={API_KEY}&LAWD_CD=11680&DEAL_YMD={test_ym}&pageNo=1&numOfRows=1"
     try:
         tr = requests.get(test_url, timeout=15)
-        if '<resultCode>00</resultCode>' in tr.text:
+        rc = re.search(r'<resultCode>(\d+)</resultCode>', tr.text)
+        rc_val = rc.group(1) if rc else ''
+        if rc_val in ('00', '000'):
             print(f"✅ API 테스트 성공 (강남구 {test_ym})\n")
         else:
-            rc = re.search(r'<resultCode>(\d+)</resultCode>', tr.text)
             rm = re.search(r'<resultMsg>([^<]+)</resultMsg>', tr.text)
-            code = rc.group(1) if rc else 'unknown'
             msg = rm.group(1) if rm else tr.text[:200]
-            print(f"❌ API 테스트 실패: {code} - {msg}")
+            print(f"❌ API 테스트 실패: {rc_val} - {msg}")
             exit(1)
     except Exception as e:
         print(f"❌ API 연결 실패: {e}")
