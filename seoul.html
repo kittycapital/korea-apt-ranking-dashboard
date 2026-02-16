@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>전국 아파트 평당가 TOP 20</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff;min-height:100vh;padding:40px 20px}
+.container{max-width:1200px;margin:0 auto}
+h1{font-size:2rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
+.subtitle{color:#888;font-size:0.9rem;margin-bottom:24px}
+.insight-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.insight-card{background:#1a1a1a;border-radius:12px;padding:20px}
+.insight-card .label{color:#888;font-size:0.8rem;margin-bottom:8px}
+.insight-card .value{font-size:1.3rem;font-weight:700}
+.insight-card .sub{font-size:0.85rem;margin-top:4px;color:#888}
+.chart-section{background:#1a1a1a;border-radius:12px;padding:24px;margin-bottom:20px}
+.chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.chart-title{font-size:1rem;font-weight:700}
+.chart-hint{font-size:0.8rem;color:#555;margin-top:8px;text-align:center}
+.toggle-btns{display:flex;gap:4px}
+.toggle-btn{background:#333;border:none;color:#aaa;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:all 0.2s}
+.toggle-btn.active{background:#00d4aa;color:#000}
+.chart-canvas-wrap{width:100%;height:200px;position:relative}
+.chart-canvas-wrap canvas{width:100%!important;height:100%!important}
+.selected-label{position:absolute;top:8px;left:12px;font-size:0.9rem;font-weight:700;color:#00d4aa;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.selected-label.show{opacity:1}
+.trend-bar{background:#1a1a1a;border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:0.9rem;color:#aaa}
+table.main-table{width:100%;border-collapse:collapse}
+table.main-table thead th{text-align:left;padding:14px 10px;border-bottom:2px solid #333;font-weight:500;color:#aaa;font-size:0.82rem}
+table.main-table thead th:last-child{text-align:right}
+.main-row{cursor:pointer;transition:background 0.25s,opacity 0.25s}
+.main-row:hover{background:#1a1a1a}
+.main-row td{padding:16px 10px;border-bottom:1px solid #222;font-size:0.95rem}
+.main-row.active-row{background:rgba(0,212,170,0.08)}
+.main-row.dimmed{opacity:0.35}
+.color-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle}
+.rank-cell{font-weight:700;color:#666;width:40px}
+.change-cell{width:50px;font-size:0.85rem}
+.apt-name{font-weight:500}
+.loc-cell{color:#aaa}
+.arrow{color:#555;font-size:0.7rem;margin-left:6px;transition:transform 0.2s;display:inline-block}
+.arrow.open{transform:rotate(180deg)}
+.price{text-align:right;font-weight:700;color:#00d4aa;font-variant-numeric:tabular-nums}
+.detail-row{display:none}
+.detail-row.show{display:table-row}
+.detail-row td{padding:0;background:#0d0d0d;border-bottom:1px solid #222}
+.detail-content{padding:20px 10px 20px 50px;display:flex;gap:30px;align-items:flex-start}
+.detail-info{flex:1}
+.detail-map{flex-shrink:0}
+.detail-table{width:100%;max-width:350px}
+.detail-table th{text-align:left;padding:7px 16px 7px 0;color:#666;font-weight:400;font-size:0.88rem;width:90px}
+.detail-table td{padding:7px 0;font-size:0.93rem;color:#ccc}
+.map-placeholder{width:300px;height:200px;background:#111;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.85rem;text-align:center;line-height:1.5}
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:0.8rem;text-align:center}
+@media(max-width:1024px){.insight-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){body{padding:20px 12px}h1{font-size:1.4rem}.insight-cards{grid-template-columns:1fr 1fr}.chart-canvas-wrap{height:180px}.detail-content{flex-direction:column;padding:15px 8px 15px 20px;gap:16px}.detail-map iframe,.map-placeholder{width:100%;max-width:300px}.main-row td{padding:12px 6px;font-size:0.88rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>전국 아파트 평당가 TOP 20 <span style="font-weight:400;font-size:1rem;color:#888;">(전용면적 기준)</span></h1>
+<p class="subtitle">최근 6개월 실거래 기준 · 단지별 최고가</p>
+
+<div class="insight-cards">
+<div class="insight-card"><div class="label">TOP 20 평균 평당가</div><div class="value">2억 3,845만</div></div>
+<div class="insight-card"><div class="label">전월 대비</div><div class="value" style="color:#00d4aa;">▲ 3.2%</div></div>
+<div class="insight-card"><div class="label">최고가 단지</div><div class="value" style="font-size:1.1rem;">아크로리버파크</div><div class="sub">3억 3,074만</div></div>
+<div class="insight-card"><div class="label">최다 지역</div><div class="value" style="font-size:1.1rem;">서초구</div><div class="sub">TOP 20 중 6개</div></div>
+</div>
+
+<div class="chart-section" id="chartSection">
+<div class="chart-header">
+<span class="chart-title">📈 아파트별 평당가 추이</span>
+<div class="toggle-btns">
+<button class="toggle-btn" onclick="setRange(12)" id="btn-1y">1년</button>
+<button class="toggle-btn" onclick="setRange(24)" id="btn-2y">2년</button>
+<button class="toggle-btn active" onclick="setRange(36)" id="btn-3y">3년</button>
+</div>
+</div>
+<div class="chart-canvas-wrap">
+<div class="selected-label" id="selectedLabel"></div>
+<canvas id="trendChart"></canvas>
+</div>
+<div class="chart-hint">👆 아래 리스트에서 아파트를 클릭하면 해당 추이가 강조됩니다</div>
+</div>
+
+<div class="trend-bar">📈 3개월 연속 상승 중 · 🔥 최대 상승: 올림픽파크포레온 (+4위) · 🆕 신규 진입: 브라이튼N40</div>
+
+<table class="main-table">
+<thead><tr><th>순위</th><th></th><th>단지명</th><th>지역</th><th style="text-align:right;">평당가</th></tr></thead>
+<tbody>
+
+<tr class="main-row" data-idx="0" onclick="handleRowClick(0)"><td class="rank-cell">1</td><td class="change-cell"><span style="color:#00d4aa;">▲2</span></td><td class="apt-name"><span class="color-dot" style="background:#00d4aa;"></span>아크로리버파크 <span class="arrow" id="arrow-1">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">3억 3,074만</td></tr>
+<tr class="detail-row" id="detail-1"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>85억</td></tr><tr><th>거래일</th><td>2026.01.15</td></tr><tr><th>층</th><td>25층</td></tr><tr><th>건축년도</th><td>2016년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="1" onclick="handleRowClick(1)"><td class="rank-cell">2</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#4ecdc4;"></span>래미안원베일리 <span class="arrow" id="arrow-2">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">3억 1,500만</td></tr>
+<tr class="detail-row" id="detail-2"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.99㎡ (25.8평)</td></tr><tr><th>거래금액</th><td>81억</td></tr><tr><th>거래일</th><td>2026.01.10</td></tr><tr><th>층</th><td>32층</td></tr><tr><th>건축년도</th><td>2024년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="2" onclick="handleRowClick(2)"><td class="rank-cell">3</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#ff6b6b;"></span>한남더힐 <span class="arrow" id="arrow-3">▼</span></td><td class="loc-cell">서울시 용산구</td><td class="price">2억 9,200만</td></tr>
+<tr class="detail-row" id="detail-3"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>한남동</td></tr><tr><th>전용면적</th><td>244.78㎡ (74.2평)</td></tr><tr><th>거래금액</th><td>216억</td></tr><tr><th>거래일</th><td>2025.12.20</td></tr><tr><th>층</th><td>4층</td></tr><tr><th>건축년도</th><td>2011년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="3" onclick="handleRowClick(3)"><td class="rank-cell">4</td><td class="change-cell"><span style="color:#00d4aa;">▲1</span></td><td class="apt-name"><span class="color-dot" style="background:#45b7d1;"></span>더펜트하우스청담 <span class="arrow" id="arrow-4">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 8,500만</td></tr>
+<tr class="detail-row" id="detail-4"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>청담동</td></tr><tr><th>전용면적</th><td>222.86㎡ (67.5평)</td></tr><tr><th>거래금액</th><td>192억</td></tr><tr><th>거래일</th><td>2025.11.28</td></tr><tr><th>층</th><td>15층</td></tr><tr><th>건축년도</th><td>2015년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="4" onclick="handleRowClick(4)"><td class="rank-cell">5</td><td class="change-cell"><span style="color:#ff4757;">▼2</span></td><td class="apt-name"><span class="color-dot" style="background:#96ceb4;"></span>나인원한남 <span class="arrow" id="arrow-5">▼</span></td><td class="loc-cell">서울시 용산구</td><td class="price">2억 7,800만</td></tr>
+<tr class="detail-row" id="detail-5"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>한남동</td></tr><tr><th>전용면적</th><td>206.67㎡ (62.6평)</td></tr><tr><th>거래금액</th><td>174억</td></tr><tr><th>거래일</th><td>2025.12.05</td></tr><tr><th>층</th><td>8층</td></tr><tr><th>건축년도</th><td>2020년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="5" onclick="handleRowClick(5)"><td class="rank-cell">6</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td><td class="apt-name"><span class="color-dot" style="background:#ffeaa7;"></span>브라이튼N40 <span class="arrow" id="arrow-6">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 6,200만</td></tr>
+<tr class="detail-row" id="detail-6"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>청담동</td></tr><tr><th>전용면적</th><td>176.54㎡ (53.5평)</td></tr><tr><th>거래금액</th><td>140억</td></tr><tr><th>거래일</th><td>2025.11.15</td></tr><tr><th>층</th><td>18층</td></tr><tr><th>건축년도</th><td>2023년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="6" onclick="handleRowClick(6)"><td class="rank-cell">7</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#dfe6e9;"></span>래미안퍼스티지 <span class="arrow" id="arrow-7">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">2억 5,400만</td></tr>
+<tr class="detail-row" id="detail-7"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.97㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>65.3억</td></tr><tr><th>거래일</th><td>2025.12.18</td></tr><tr><th>층</th><td>21층</td></tr><tr><th>건축년도</th><td>2009년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="7" onclick="handleRowClick(7)"><td class="rank-cell">8</td><td class="change-cell"><span style="color:#00d4aa;">▲1</span></td><td class="apt-name"><span class="color-dot" style="background:#a29bfe;"></span>반포자이 <span class="arrow" id="arrow-8">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">2억 4,800만</td></tr>
+<tr class="detail-row" id="detail-8"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.94㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>63.8억</td></tr><tr><th>거래일</th><td>2025.10.22</td></tr><tr><th>층</th><td>15층</td></tr><tr><th>건축년도</th><td>2009년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="8" onclick="handleRowClick(8)"><td class="rank-cell">9</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#fd79a8;"></span>아크로서울포레스트 <span class="arrow" id="arrow-9">▼</span></td><td class="loc-cell">서울시 성동구</td><td class="price">2억 4,200만</td></tr>
+<tr class="detail-row" id="detail-9"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>성수동1가</td></tr><tr><th>전용면적</th><td>206.13㎡ (62.5평)</td></tr><tr><th>거래금액</th><td>151억</td></tr><tr><th>거래일</th><td>2025.11.08</td></tr><tr><th>층</th><td>28층</td></tr><tr><th>건축년도</th><td>2020년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="9" onclick="handleRowClick(9)"><td class="rank-cell">10</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#e17055;"></span>갤러리아포레 <span class="arrow" id="arrow-10">▼</span></td><td class="loc-cell">서울시 성동구</td><td class="price">2억 3,600만</td></tr>
+<tr class="detail-row" id="detail-10"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>성수동1가</td></tr><tr><th>전용면적</th><td>178.65㎡ (54.1평)</td></tr><tr><th>거래금액</th><td>127.5억</td></tr><tr><th>거래일</th><td>2025.10.30</td></tr><tr><th>층</th><td>20층</td></tr><tr><th>건축년도</th><td>2011년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="10" onclick="handleRowClick(10)"><td class="rank-cell">11</td><td class="change-cell"><span style="color:#00d4aa;">▲2</span></td><td class="apt-name"><span class="color-dot" style="background:#00b894;"></span>트리마제 <span class="arrow" id="arrow-11">▼</span></td><td class="loc-cell">서울시 성동구</td><td class="price">2억 2,900만</td></tr>
+<tr class="detail-row" id="detail-11"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>성수동1가</td></tr><tr><th>전용면적</th><td>122.69㎡ (37.2평)</td></tr><tr><th>거래금액</th><td>85억</td></tr><tr><th>거래일</th><td>2025.12.02</td></tr><tr><th>층</th><td>35층</td></tr><tr><th>건축년도</th><td>2017년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="11" onclick="handleRowClick(11)"><td class="rank-cell">12</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#6c5ce7;"></span>도곡렉슬 <span class="arrow" id="arrow-12">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 2,300만</td></tr>
+<tr class="detail-row" id="detail-12"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>도곡동</td></tr><tr><th>전용면적</th><td>84.99㎡ (25.8평)</td></tr><tr><th>거래금액</th><td>57.5억</td></tr><tr><th>거래일</th><td>2025.11.25</td></tr><tr><th>층</th><td>18층</td></tr><tr><th>건축년도</th><td>2003년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="12" onclick="handleRowClick(12)"><td class="rank-cell">13</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#fdcb6e;"></span>잠실엘스 <span class="arrow" id="arrow-13">▼</span></td><td class="loc-cell">서울시 송파구</td><td class="price">2억 1,800만</td></tr>
+<tr class="detail-row" id="detail-13"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>잠실동</td></tr><tr><th>전용면적</th><td>84.82㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>56억</td></tr><tr><th>거래일</th><td>2025.12.10</td></tr><tr><th>층</th><td>22층</td></tr><tr><th>건축년도</th><td>2008년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="13" onclick="handleRowClick(13)"><td class="rank-cell">14</td><td class="change-cell"><span style="color:#ff4757;">▼2</span></td><td class="apt-name"><span class="color-dot" style="background:#e84393;"></span>잠실리센츠 <span class="arrow" id="arrow-14">▼</span></td><td class="loc-cell">서울시 송파구</td><td class="price">2억 1,200만</td></tr>
+<tr class="detail-row" id="detail-14"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>잠실동</td></tr><tr><th>전용면적</th><td>84.99㎡ (25.8평)</td></tr><tr><th>거래금액</th><td>54.5억</td></tr><tr><th>거래일</th><td>2025.11.18</td></tr><tr><th>층</th><td>19층</td></tr><tr><th>건축년도</th><td>2008년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="14" onclick="handleRowClick(14)"><td class="rank-cell">15</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#636e72;"></span>타워팰리스3차 <span class="arrow" id="arrow-15">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 800만</td></tr>
+<tr class="detail-row" id="detail-15"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>도곡동</td></tr><tr><th>전용면적</th><td>163.23㎡ (49.5평)</td></tr><tr><th>거래금액</th><td>103억</td></tr><tr><th>거래일</th><td>2025.10.15</td></tr><tr><th>층</th><td>55층</td></tr><tr><th>건축년도</th><td>2004년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="15" onclick="handleRowClick(15)"><td class="rank-cell">16</td><td class="change-cell"><span style="color:#00d4aa;">▲1</span></td><td class="apt-name"><span class="color-dot" style="background:#fab1a0;"></span>헬리오시티 <span class="arrow" id="arrow-16">▼</span></td><td class="loc-cell">서울시 송파구</td><td class="price">2억 200만</td></tr>
+<tr class="detail-row" id="detail-16"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>가락동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>52억</td></tr><tr><th>거래일</th><td>2025.12.05</td></tr><tr><th>층</th><td>28층</td></tr><tr><th>건축년도</th><td>2018년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="16" onclick="handleRowClick(16)"><td class="rank-cell">17</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#74b9ff;"></span>래미안대치팰리스 <span class="arrow" id="arrow-17">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">1억 9,800만</td></tr>
+<tr class="detail-row" id="detail-17"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>대치동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>51억</td></tr><tr><th>거래일</th><td>2025.11.22</td></tr><tr><th>층</th><td>16층</td></tr><tr><th>건축년도</th><td>2015년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="17" onclick="handleRowClick(17)"><td class="rank-cell">18</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#55efc4;"></span>반포래미안아이파크 <span class="arrow" id="arrow-18">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">1억 9,500만</td></tr>
+<tr class="detail-row" id="detail-18"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>59.96㎡ (18.2평)</td></tr><tr><th>거래금액</th><td>35.5억</td></tr><tr><th>거래일</th><td>2025.10.28</td></tr><tr><th>층</th><td>12층</td></tr><tr><th>건축년도</th><td>2018년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="18" onclick="handleRowClick(18)"><td class="rank-cell">19</td><td class="change-cell"><span style="color:#00d4aa;">▲3</span></td><td class="apt-name"><span class="color-dot" style="background:#b2bec3;"></span>은마아파트 <span class="arrow" id="arrow-19">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">1억 9,200만</td></tr>
+<tr class="detail-row" id="detail-19"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>대치동</td></tr><tr><th>전용면적</th><td>84.43㎡ (25.6평)</td></tr><tr><th>거래금액</th><td>49.2억</td></tr><tr><th>거래일</th><td>2025.12.12</td></tr><tr><th>층</th><td>8층</td></tr><tr><th>건축년도</th><td>1979년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+<tr class="main-row" data-idx="19" onclick="handleRowClick(19)"><td class="rank-cell">20</td><td class="change-cell"><span style="color:#00d4aa;">▲4</span></td><td class="apt-name"><span class="color-dot" style="background:#ff7675;"></span>올림픽파크포레온 <span class="arrow" id="arrow-20">▼</span></td><td class="loc-cell">서울시 강동구</td><td class="price">1억 8,900만</td></tr>
+<tr class="detail-row" id="detail-20"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>둔촌동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>48.6억</td></tr><tr><th>거래일</th><td>2025.11.30</td></tr><tr><th>층</th><td>42층</td></tr><tr><th>건축년도</th><td>2024년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
+
+</tbody></table>
+
+<div class="footer">마지막 업데이트: 2026.02.05 09:00 · 데이터 출처: 국토교통부 실거래가 공개시스템</div>
+</div>
+
+<script>
+/* ── Sample per-apartment data (replaced by fetch_data.py in production) ── */
+const aptLabels = ["2023.02","2023.03","2023.04","2023.05","2023.06","2023.07","2023.08","2023.09","2023.10","2023.11","2023.12","2024.01","2024.02","2024.03","2024.04","2024.05","2024.06","2024.07","2024.08","2024.09","2024.10","2024.11","2024.12","2025.01","2025.02","2025.03","2025.04","2025.05","2025.06","2025.07","2025.08","2025.09","2025.10","2025.11","2025.12","2026.01"];
+
+function genLine(base, volatility, seed) {
+    const arr = [];
+    let v = base;
+    let s = seed;
+    for (let i = 0; i < aptLabels.length; i++) {
+        s = (s * 9301 + 49297) % 233280;
+        const r = s / 233280;
+        v += Math.round((r - 0.38) * volatility);
+        if (r > 0.92) { arr.push(null); } else { arr.push(v); }
+    }
+    return arr;
+}
+
+const aptNames = ["아크로리버파크","래미안원베일리","한남더힐","더펜트하우스청담","나인원한남","브라이튼N40","래미안퍼스티지","반포자이","아크로서울포레스트","갤러리아포레","트리마제","도곡렉슬","잠실엘스","잠실리센츠","타워팰리스3차","헬리오시티","래미안대치팰리스","반포래미안아이파크","은마아파트","올림픽파크포레온"];
+const basePrices = [30000,29000,27000,26000,25500,24000,23000,22500,22000,21500,21000,20000,19500,19000,18500,18000,17500,17000,16500,16000];
+
+const aptDatasets = aptNames.map((name, i) => ({
+    label: name,
+    data: genLine(basePrices[i], 600, (i+1)*137),
+    borderColor: 'transparent',
+    backgroundColor: 'transparent',
+    tension: 0.3,
+    pointRadius: 0,
+    pointHoverRadius: 4,
+    borderWidth: 1.5,
+    spanGaps: true
+}));
+
+const COLORS = ["#00d4aa","#4ecdc4","#ff6b6b","#45b7d1","#96ceb4","#ffeaa7","#dfe6e9","#a29bfe","#fd79a8","#e17055","#00b894","#6c5ce7","#fdcb6e","#e84393","#636e72","#fab1a0","#74b9ff","#55efc4","#b2bec3","#ff7675"];
+
+/* ── 클릭 인터랙션 ── */
+const ctx = document.getElementById('trendChart').getContext('2d');
+const datasets = aptDatasets.map((d, i) => ({
+    ...d,
+    borderColor: COLORS[i],
+    borderWidth: 1.5,
+    pointRadius: 0,
+    pointHoverRadius: 4,
+    backgroundColor: 'transparent',
+    tension: 0.3,
+    spanGaps: true,
+    _origColor: COLORS[i]
+}));
+
+const tc = new Chart(ctx, {
+    type: 'line',
+    data: { labels: aptLabels, datasets: datasets },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: '#1a1a1a', titleColor: '#fff',
+                bodyColor: '#ccc', borderColor: '#333', borderWidth: 1,
+                filter: function(item) { return item.raw !== null; },
+                callbacks: {
+                    label: function(c) {
+                        if (c.raw === null) return null;
+                        const v = c.raw;
+                        const b = Math.floor(v / 10000);
+                        const r = v % 10000;
+                        const p = b > 0 ? b + '억 ' + r.toLocaleString() + '만' : v.toLocaleString() + '만';
+                        return c.dataset.label + ': ' + p;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: { ticks: { color: '#666', maxRotation: 45, maxTicksLimit: 12 }, grid: { color: '#222' } },
+            y: {
+                ticks: {
+                    color: '#666',
+                    callback: function(v) {
+                        const b = Math.floor(v / 10000);
+                        return b > 0 ? b + '억' : v.toLocaleString() + '만';
+                    }
+                },
+                grid: { color: '#222' }
+            }
+        }
+    }
+});
+
+/* ── 기간 토글 ── */
+function setRange(m) {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(m === 12 ? 'btn-1y' : m === 24 ? 'btn-2y' : 'btn-3y').classList.add('active');
+    tc.data.labels = aptLabels.slice(-m);
+    tc.data.datasets.forEach((ds, i) => {
+        ds.data = aptDatasets[i].data.slice(-m);
+    });
+    tc.update();
+}
+
+/* ── 클릭 인터랙션: 리스트 → 차트 하이라이트 ── */
+let activeIdx = -1;
+
+function highlightChart(idx) {
+    const label = document.getElementById('selectedLabel');
+    tc.data.datasets.forEach((ds, i) => {
+        if (i === idx) {
+            ds.borderWidth = 3.5;
+            ds.borderColor = ds._origColor;
+            ds.pointRadius = 3;
+            ds.pointBackgroundColor = ds._origColor;
+        } else {
+            ds.borderWidth = 1;
+            ds.borderColor = ds._origColor + '1A';
+            ds.pointRadius = 0;
+        }
+    });
+    label.textContent = aptDatasets[idx].label;
+    label.style.color = COLORS[idx];
+    label.classList.add('show');
+    tc.update();
+}
+
+function resetChart() {
+    const label = document.getElementById('selectedLabel');
+    tc.data.datasets.forEach((ds) => {
+        ds.borderWidth = 1.5;
+        ds.borderColor = ds._origColor;
+        ds.pointRadius = 0;
+    });
+    label.classList.remove('show');
+    tc.update();
+}
+
+function highlightRows(idx) {
+    document.querySelectorAll('.main-row').forEach((row, i) => {
+        if (i === idx) {
+            row.classList.add('active-row');
+            row.classList.remove('dimmed');
+        } else {
+            row.classList.remove('active-row');
+            row.classList.add('dimmed');
+        }
+    });
+}
+
+function resetRows() {
+    document.querySelectorAll('.main-row').forEach(row => {
+        row.classList.remove('active-row', 'dimmed');
+    });
+}
+
+function handleRowClick(idx) {
+    if (activeIdx === idx) {
+        activeIdx = -1;
+        resetChart();
+        resetRows();
+    } else {
+        activeIdx = idx;
+        highlightChart(idx);
+        highlightRows(idx);
+        document.getElementById('chartSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    toggleDetail(idx + 1);
+}
+
+function toggleDetail(id) {
+    document.getElementById('detail-' + id).classList.toggle('show');
+    document.getElementById('arrow-' + id).classList.toggle('open');
+}
+</script>
+</body>
+</html>
