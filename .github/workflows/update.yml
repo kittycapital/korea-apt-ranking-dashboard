@@ -1,23 +1,22 @@
 name: Update Apartment Dashboards
 
 on:
-  schedule:
-    - cron: '0 18 * * *'  # 매일 새벽 3시 KST (18:00 UTC)
-  workflow_dispatch:
+  push:
+    paths:
+      - 'data/csv/**'  # CSV 파일 추가/변경 시 자동 실행
+  workflow_dispatch:       # 수동 실행
 
 jobs:
   update-all:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install requests
-      - name: Fetch data and generate dashboards
+      - name: Generate dashboards from CSV
         env:
-          MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
           GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
         run: python fetch_all.py
       - name: Commit and push
