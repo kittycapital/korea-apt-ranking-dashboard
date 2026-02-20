@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>전국 아파트 평당가 TOP 20</title>
+<title>서울 아파트 평당가 TOP 20</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -53,22 +53,21 @@ table.main-table thead th:last-child{text-align:right}
 .detail-table{width:100%;max-width:350px}
 .detail-table th{text-align:left;padding:7px 16px 7px 0;color:#666;font-weight:400;font-size:0.88rem;width:90px}
 .detail-table td{padding:7px 0;font-size:0.93rem;color:#ccc}
-.map-placeholder{width:300px;height:200px;background:#111;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#555;font-size:0.85rem;text-align:center;line-height:1.5}
 .footer{margin-top:40px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:0.8rem;text-align:center}
 @media(max-width:1024px){.insight-cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){body{padding:20px 12px}h1{font-size:1.4rem}.insight-cards{grid-template-columns:1fr 1fr}.chart-canvas-wrap{height:180px}.detail-content{flex-direction:column;padding:15px 8px 15px 20px;gap:16px}.detail-map iframe,.map-placeholder{width:100%;max-width:300px}.main-row td{padding:12px 6px;font-size:0.88rem}}
+@media(max-width:600px){body{padding:20px 12px}h1{font-size:1.4rem}.insight-cards{grid-template-columns:1fr 1fr}.chart-canvas-wrap{height:180px}.detail-content{flex-direction:column;padding:15px 8px 15px 20px;gap:16px}.detail-map iframe{width:100%;max-width:300px}.main-row td{padding:12px 6px;font-size:0.88rem}}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>전국 아파트 평당가 TOP 20 <span style="font-weight:400;font-size:1rem;color:#888;">(전용면적 기준)</span></h1>
+<h1>서울 아파트 평당가 TOP 20 <span style="font-weight:400;font-size:1rem;color:#888;">(전용면적 기준)</span></h1>
 <p class="subtitle">최근 6개월 실거래 기준 · 단지별 최고가</p>
 
 <div class="insight-cards">
-<div class="insight-card"><div class="label">TOP 20 평균 평당가</div><div class="value">2억 3,845만</div></div>
-<div class="insight-card"><div class="label">전월 대비</div><div class="value" style="color:#00d4aa;">▲ 3.2%</div></div>
-<div class="insight-card"><div class="label">최고가 단지</div><div class="value" style="font-size:1.1rem;">아크로리버파크</div><div class="sub">3억 3,074만</div></div>
-<div class="insight-card"><div class="label">최다 지역</div><div class="value" style="font-size:1.1rem;">서초구</div><div class="sub">TOP 20 중 6개</div></div>
+<div class="insight-card"><div class="label">TOP 20 평균 평당가</div><div class="value">2억 2,743만</div></div>
+<div class="insight-card"><div class="label">전월 대비</div><div class="value" style="color:#00d4aa;">▲ 20.9%</div></div>
+<div class="insight-card"><div class="label">최고가 단지</div><div class="value" style="font-size:1.1rem;">래미안원베일리</div><div class="sub">2억 6,363만</div></div>
+<div class="insight-card"><div class="label">최다 지역</div><div class="value" style="font-size:1.1rem;">서초구</div><div class="sub">TOP 20 중 10개</div></div>
 </div>
 
 <div class="chart-section" id="chartSection">
@@ -87,112 +86,445 @@ table.main-table thead th:last-child{text-align:right}
 <div class="chart-hint">👆 아래 리스트에서 아파트를 클릭하면 해당 추이가 강조됩니다</div>
 </div>
 
-<div class="trend-bar">📈 3개월 연속 상승 중 · 🔥 최대 상승: 올림픽파크포레온 (+4위) · 🆕 신규 진입: 브라이튼N40</div>
+<div class="trend-bar">🆕 신규 진입: 래미안원베일리 · 🆕 신규 진입: 아크로리버파크 · 🆕 신규 진입: 현대5차(71,72동) · 🆕 신규 진입: 현대14차(203,204,205,206동) · 🆕 신규 진입: 아크로리버뷰신반포 · 🆕 신규 진입: 현대3차(61~64동) · 🆕 신규 진입: 아크로서울포레스트 · 🆕 신규 진입: 신현대11차 · 🆕 신규 진입: 반포센트럴자이 · 🆕 신규 진입: 트리마제 · 🆕 신규 진입: 래미안퍼스티지 · 🆕 신규 진입: 미성2차 · 🆕 신규 진입: 래미안원펜타스 · 🆕 신규 진입: 반포르엘 · 🆕 신규 진입: 한남더힐 · 🆕 신규 진입: 신현대9차 · 🆕 신규 진입: 디에이치반포라클라스 · 🆕 신규 진입: 현대4차저층(51~56동) · 🆕 신규 진입: 반포자이 · 🆕 신규 진입: 신반포2</div>
 
 <table class="main-table">
 <thead><tr><th>순위</th><th></th><th>단지명</th><th>지역</th><th style="text-align:right;">평당가</th></tr></thead>
 <tbody>
+        <tr class="main-row" data-idx="0" onclick="handleRowClick(0)">
+            <td class="rank-cell">1</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#00d4aa;"></span>래미안원베일리 <span class="arrow" id="arrow-1">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 6,363만</td>
+        </tr>
+        <tr class="detail-row" id="detail-1"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>반포동</td></tr>
+                <tr><th>전용면적</th><td>59.96㎡ (18.2평)</td></tr>
+                <tr><th>거래금액</th><td>47.9억</td></tr>
+                <tr><th>거래일</th><td>2025.11.25</td></tr>
+                <tr><th>층</th><td>33층</td></tr>
+                <tr><th>건축년도</th><td>2023년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=래미안원베일리+서울시+서초구+반포동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="1" onclick="handleRowClick(1)">
+            <td class="rank-cell">2</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#4ecdc4;"></span>아크로리버파크 <span class="arrow" id="arrow-2">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 5,872만</td>
+        </tr>
+        <tr class="detail-row" id="detail-2"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>반포동</td></tr>
+                <tr><th>전용면적</th><td>59.95㎡ (18.2평)</td></tr>
+                <tr><th>거래금액</th><td>47억</td></tr>
+                <tr><th>거래일</th><td>2025.11.06</td></tr>
+                <tr><th>층</th><td>15층</td></tr>
+                <tr><th>건축년도</th><td>2016년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=아크로리버파크+서울시+서초구+반포동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="2" onclick="handleRowClick(2)">
+            <td class="rank-cell">3</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#ff6b6b;"></span>현대5차(71,72동) <span class="arrow" id="arrow-3">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 5,283만</td>
+        </tr>
+        <tr class="detail-row" id="detail-3"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>82.23㎡ (24.9평)</td></tr>
+                <tr><th>거래금액</th><td>63억</td></tr>
+                <tr><th>거래일</th><td>2025.09.24</td></tr>
+                <tr><th>층</th><td>11층</td></tr>
+                <tr><th>건축년도</th><td>1977년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=현대5차(71,72동)+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="3" onclick="handleRowClick(3)">
+            <td class="rank-cell">4</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#45b7d1;"></span>현대14차(203,204,205,206동) <span class="arrow" id="arrow-4">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 4,853만</td>
+        </tr>
+        <tr class="detail-row" id="detail-4"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>84.98㎡ (25.8평)</td></tr>
+                <tr><th>거래금액</th><td>64억</td></tr>
+                <tr><th>거래일</th><td>2025.11.05</td></tr>
+                <tr><th>층</th><td>6층</td></tr>
+                <tr><th>건축년도</th><td>1987년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=현대14차(203,204,205,206동)+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="4" onclick="handleRowClick(4)">
+            <td class="rank-cell">5</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#96ceb4;"></span>아크로리버뷰신반포 <span class="arrow" id="arrow-5">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 4,382만</td>
+        </tr>
+        <tr class="detail-row" id="detail-5"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>잠원동</td></tr>
+                <tr><th>전용면적</th><td>78.5㎡ (23.8평)</td></tr>
+                <tr><th>거래금액</th><td>58억</td></tr>
+                <tr><th>거래일</th><td>2026.02.10</td></tr>
+                <tr><th>층</th><td>27층</td></tr>
+                <tr><th>건축년도</th><td>2018년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=아크로리버뷰신반포+서울시+서초구+잠원동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="5" onclick="handleRowClick(5)">
+            <td class="rank-cell">6</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#ffeaa7;"></span>현대3차(61~64동) <span class="arrow" id="arrow-6">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 4,280만</td>
+        </tr>
+        <tr class="detail-row" id="detail-6"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>82.5㎡ (25.0평)</td></tr>
+                <tr><th>거래금액</th><td>60.7억</td></tr>
+                <tr><th>거래일</th><td>2025.11.28</td></tr>
+                <tr><th>층</th><td>12층</td></tr>
+                <tr><th>건축년도</th><td>1976년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=현대3차(61~64동)+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="6" onclick="handleRowClick(6)">
+            <td class="rank-cell">7</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#dfe6e9;"></span>아크로서울포레스트 <span class="arrow" id="arrow-7">▼</span></td>
+            <td class="loc-cell">서울시 성동구</td><td class="price">2억 4,191만</td>
+        </tr>
+        <tr class="detail-row" id="detail-7"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>성수동1가</td></tr>
+                <tr><th>전용면적</th><td>159.603㎡ (48.4평)</td></tr>
+                <tr><th>거래금액</th><td>117억</td></tr>
+                <tr><th>거래일</th><td>2025.09.08</td></tr>
+                <tr><th>층</th><td>8층</td></tr>
+                <tr><th>건축년도</th><td>2020년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=아크로서울포레스트+서울시+성동구+성수동1가&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="7" onclick="handleRowClick(7)">
+            <td class="rank-cell">8</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#a29bfe;"></span>신현대11차 <span class="arrow" id="arrow-8">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 3,030만</td>
+        </tr>
+        <tr class="detail-row" id="detail-8"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>183.41㎡ (55.6평)</td></tr>
+                <tr><th>거래금액</th><td>128억</td></tr>
+                <tr><th>거래일</th><td>2025.12.24</td></tr>
+                <tr><th>층</th><td>12층</td></tr>
+                <tr><th>건축년도</th><td>1983년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=신현대11차+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="8" onclick="handleRowClick(8)">
+            <td class="rank-cell">9</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#fd79a8;"></span>반포센트럴자이 <span class="arrow" id="arrow-9">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 2,503만</td>
+        </tr>
+        <tr class="detail-row" id="detail-9"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>잠원동</td></tr>
+                <tr><th>전용면적</th><td>59.98㎡ (18.2평)</td></tr>
+                <tr><th>거래금액</th><td>40.9억</td></tr>
+                <tr><th>거래일</th><td>2025.12.31</td></tr>
+                <tr><th>층</th><td>20층</td></tr>
+                <tr><th>건축년도</th><td>2020년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=반포센트럴자이+서울시+서초구+잠원동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="9" onclick="handleRowClick(9)">
+            <td class="rank-cell">10</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#e17055;"></span>트리마제 <span class="arrow" id="arrow-10">▼</span></td>
+            <td class="loc-cell">서울시 성동구</td><td class="price">2억 2,487만</td>
+        </tr>
+        <tr class="detail-row" id="detail-10"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>성수동1가</td></tr>
+                <tr><th>전용면적</th><td>84.8213㎡ (25.7평)</td></tr>
+                <tr><th>거래금액</th><td>57.8억</td></tr>
+                <tr><th>거래일</th><td>2026.01.02</td></tr>
+                <tr><th>층</th><td>33층</td></tr>
+                <tr><th>건축년도</th><td>2017년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=트리마제+서울시+성동구+성수동1가&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="10" onclick="handleRowClick(10)">
+            <td class="rank-cell">11</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#00b894;"></span>래미안퍼스티지 <span class="arrow" id="arrow-11">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 2,455만</td>
+        </tr>
+        <tr class="detail-row" id="detail-11"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>반포동</td></tr>
+                <tr><th>전용면적</th><td>59.96㎡ (18.2평)</td></tr>
+                <tr><th>거래금액</th><td>40.8억</td></tr>
+                <tr><th>거래일</th><td>2025.12.25</td></tr>
+                <tr><th>층</th><td>2층</td></tr>
+                <tr><th>건축년도</th><td>2009년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=래미안퍼스티지+서울시+서초구+반포동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="11" onclick="handleRowClick(11)">
+            <td class="rank-cell">12</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#6c5ce7;"></span>미성2차 <span class="arrow" id="arrow-12">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 2,177만</td>
+        </tr>
+        <tr class="detail-row" id="detail-12"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>74.4㎡ (22.5평)</td></tr>
+                <tr><th>거래금액</th><td>50억</td></tr>
+                <tr><th>거래일</th><td>2025.11.13</td></tr>
+                <tr><th>층</th><td>14층</td></tr>
+                <tr><th>건축년도</th><td>1987년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=미성2차+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="12" onclick="handleRowClick(12)">
+            <td class="rank-cell">13</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#fdcb6e;"></span>래미안원펜타스 <span class="arrow" id="arrow-13">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 1,767만</td>
+        </tr>
+        <tr class="detail-row" id="detail-13"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>반포동</td></tr>
+                <tr><th>전용면적</th><td>107.6378㎡ (32.6평)</td></tr>
+                <tr><th>거래금액</th><td>71억</td></tr>
+                <tr><th>거래일</th><td>2025.11.28</td></tr>
+                <tr><th>층</th><td>16층</td></tr>
+                <tr><th>건축년도</th><td>2024년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=래미안원펜타스+서울시+서초구+반포동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="13" onclick="handleRowClick(13)">
+            <td class="rank-cell">14</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#e84393;"></span>반포르엘 <span class="arrow" id="arrow-14">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 1,518만</td>
+        </tr>
+        <tr class="detail-row" id="detail-14"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>잠원동</td></tr>
+                <tr><th>전용면적</th><td>84.3465㎡ (25.6평)</td></tr>
+                <tr><th>거래금액</th><td>55억</td></tr>
+                <tr><th>거래일</th><td>2025.10.18</td></tr>
+                <tr><th>층</th><td>20층</td></tr>
+                <tr><th>건축년도</th><td>2022년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=반포르엘+서울시+서초구+잠원동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="14" onclick="handleRowClick(14)">
+            <td class="rank-cell">15</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#636e72;"></span>한남더힐 <span class="arrow" id="arrow-15">▼</span></td>
+            <td class="loc-cell">서울시 용산구</td><td class="price">2억 1,176만</td>
+        </tr>
+        <tr class="detail-row" id="detail-15"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>한남동</td></tr>
+                <tr><th>전용면적</th><td>59.686㎡ (18.1평)</td></tr>
+                <tr><th>거래금액</th><td>38.3억</td></tr>
+                <tr><th>거래일</th><td>2025.09.19</td></tr>
+                <tr><th>층</th><td>2층</td></tr>
+                <tr><th>건축년도</th><td>2011년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=한남더힐+서울시+용산구+한남동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="15" onclick="handleRowClick(15)">
+            <td class="rank-cell">16</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#fab1a0;"></span>신현대9차 <span class="arrow" id="arrow-16">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 1,146만</td>
+        </tr>
+        <tr class="detail-row" id="detail-16"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>109.24㎡ (33.1평)</td></tr>
+                <tr><th>거래금액</th><td>70억</td></tr>
+                <tr><th>거래일</th><td>2026.01.12</td></tr>
+                <tr><th>층</th><td>10층</td></tr>
+                <tr><th>건축년도</th><td>1982년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=신현대9차+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="16" onclick="handleRowClick(16)">
+            <td class="rank-cell">17</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#74b9ff;"></span>디에이치반포라클라스 <span class="arrow" id="arrow-17">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 629만</td>
+        </tr>
+        <tr class="detail-row" id="detail-17"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>반포동</td></tr>
+                <tr><th>전용면적</th><td>59.9897㎡ (18.2평)</td></tr>
+                <tr><th>거래금액</th><td>37.5억</td></tr>
+                <tr><th>거래일</th><td>2025.11.05</td></tr>
+                <tr><th>층</th><td>32층</td></tr>
+                <tr><th>건축년도</th><td>2021년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=디에이치반포라클라스+서울시+서초구+반포동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="17" onclick="handleRowClick(17)">
+            <td class="rank-cell">18</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#55efc4;"></span>현대4차저층(51~56동) <span class="arrow" id="arrow-18">▼</span></td>
+            <td class="loc-cell">서울시 강남구</td><td class="price">2억 431만</td>
+        </tr>
+        <tr class="detail-row" id="detail-18"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>압구정동</td></tr>
+                <tr><th>전용면적</th><td>117.91㎡ (35.7평)</td></tr>
+                <tr><th>거래금액</th><td>73억</td></tr>
+                <tr><th>거래일</th><td>2025.12.29</td></tr>
+                <tr><th>층</th><td>2층</td></tr>
+                <tr><th>건축년도</th><td>1977년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=현대4차저층(51~56동)+서울시+강남구+압구정동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="18" onclick="handleRowClick(18)">
+            <td class="rank-cell">19</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#b2bec3;"></span>반포자이 <span class="arrow" id="arrow-19">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 202만</td>
+        </tr>
+        <tr class="detail-row" id="detail-19"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>반포동</td></tr>
+                <tr><th>전용면적</th><td>84.943㎡ (25.7평)</td></tr>
+                <tr><th>거래금액</th><td>52억</td></tr>
+                <tr><th>거래일</th><td>2026.01.19</td></tr>
+                <tr><th>층</th><td>18층</td></tr>
+                <tr><th>건축년도</th><td>2009년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=반포자이+서울시+서초구+반포동&zoom=15"></iframe></div>
+        </div></td></tr>
+        <tr class="main-row" data-idx="19" onclick="handleRowClick(19)">
+            <td class="rank-cell">20</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td>
+            <td class="apt-name"><span class="color-dot" style="background:#ff7675;"></span>신반포2 <span class="arrow" id="arrow-20">▼</span></td>
+            <td class="loc-cell">서울시 서초구</td><td class="price">2억 113만</td>
+        </tr>
+        <tr class="detail-row" id="detail-20"><td colspan="5"><div class="detail-content">
+            <div class="detail-info"><table class="detail-table">
+                <tr><th>동</th><td>잠원동</td></tr>
+                <tr><th>전용면적</th><td>68.91㎡ (20.9평)</td></tr>
+                <tr><th>거래금액</th><td>42억</td></tr>
+                <tr><th>거래일</th><td>2026.02.06</td></tr>
+                <tr><th>층</th><td>10층</td></tr>
+                <tr><th>건축년도</th><td>1978년</td></tr>
+            </table></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key=&q=신반포2+서울시+서초구+잠원동&zoom=15"></iframe></div>
+        </div></td></tr></tbody>
+</table>
 
-<tr class="main-row" data-idx="0" onclick="handleRowClick(0)"><td class="rank-cell">1</td><td class="change-cell"><span style="color:#00d4aa;">▲2</span></td><td class="apt-name"><span class="color-dot" style="background:#00d4aa;"></span>아크로리버파크 <span class="arrow" id="arrow-1">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">3억 3,074만</td></tr>
-<tr class="detail-row" id="detail-1"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>85억</td></tr><tr><th>거래일</th><td>2026.01.15</td></tr><tr><th>층</th><td>25층</td></tr><tr><th>건축년도</th><td>2016년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="1" onclick="handleRowClick(1)"><td class="rank-cell">2</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#4ecdc4;"></span>래미안원베일리 <span class="arrow" id="arrow-2">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">3억 1,500만</td></tr>
-<tr class="detail-row" id="detail-2"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.99㎡ (25.8평)</td></tr><tr><th>거래금액</th><td>81억</td></tr><tr><th>거래일</th><td>2026.01.10</td></tr><tr><th>층</th><td>32층</td></tr><tr><th>건축년도</th><td>2024년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="2" onclick="handleRowClick(2)"><td class="rank-cell">3</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#ff6b6b;"></span>한남더힐 <span class="arrow" id="arrow-3">▼</span></td><td class="loc-cell">서울시 용산구</td><td class="price">2억 9,200만</td></tr>
-<tr class="detail-row" id="detail-3"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>한남동</td></tr><tr><th>전용면적</th><td>244.78㎡ (74.2평)</td></tr><tr><th>거래금액</th><td>216억</td></tr><tr><th>거래일</th><td>2025.12.20</td></tr><tr><th>층</th><td>4층</td></tr><tr><th>건축년도</th><td>2011년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="3" onclick="handleRowClick(3)"><td class="rank-cell">4</td><td class="change-cell"><span style="color:#00d4aa;">▲1</span></td><td class="apt-name"><span class="color-dot" style="background:#45b7d1;"></span>더펜트하우스청담 <span class="arrow" id="arrow-4">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 8,500만</td></tr>
-<tr class="detail-row" id="detail-4"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>청담동</td></tr><tr><th>전용면적</th><td>222.86㎡ (67.5평)</td></tr><tr><th>거래금액</th><td>192억</td></tr><tr><th>거래일</th><td>2025.11.28</td></tr><tr><th>층</th><td>15층</td></tr><tr><th>건축년도</th><td>2015년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="4" onclick="handleRowClick(4)"><td class="rank-cell">5</td><td class="change-cell"><span style="color:#ff4757;">▼2</span></td><td class="apt-name"><span class="color-dot" style="background:#96ceb4;"></span>나인원한남 <span class="arrow" id="arrow-5">▼</span></td><td class="loc-cell">서울시 용산구</td><td class="price">2억 7,800만</td></tr>
-<tr class="detail-row" id="detail-5"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>한남동</td></tr><tr><th>전용면적</th><td>206.67㎡ (62.6평)</td></tr><tr><th>거래금액</th><td>174억</td></tr><tr><th>거래일</th><td>2025.12.05</td></tr><tr><th>층</th><td>8층</td></tr><tr><th>건축년도</th><td>2020년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="5" onclick="handleRowClick(5)"><td class="rank-cell">6</td><td class="change-cell"><span style="color:#ffeaa7;font-size:0.8rem;">NEW</span></td><td class="apt-name"><span class="color-dot" style="background:#ffeaa7;"></span>브라이튼N40 <span class="arrow" id="arrow-6">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 6,200만</td></tr>
-<tr class="detail-row" id="detail-6"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>청담동</td></tr><tr><th>전용면적</th><td>176.54㎡ (53.5평)</td></tr><tr><th>거래금액</th><td>140억</td></tr><tr><th>거래일</th><td>2025.11.15</td></tr><tr><th>층</th><td>18층</td></tr><tr><th>건축년도</th><td>2023년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="6" onclick="handleRowClick(6)"><td class="rank-cell">7</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#dfe6e9;"></span>래미안퍼스티지 <span class="arrow" id="arrow-7">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">2억 5,400만</td></tr>
-<tr class="detail-row" id="detail-7"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.97㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>65.3억</td></tr><tr><th>거래일</th><td>2025.12.18</td></tr><tr><th>층</th><td>21층</td></tr><tr><th>건축년도</th><td>2009년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="7" onclick="handleRowClick(7)"><td class="rank-cell">8</td><td class="change-cell"><span style="color:#00d4aa;">▲1</span></td><td class="apt-name"><span class="color-dot" style="background:#a29bfe;"></span>반포자이 <span class="arrow" id="arrow-8">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">2억 4,800만</td></tr>
-<tr class="detail-row" id="detail-8"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>84.94㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>63.8억</td></tr><tr><th>거래일</th><td>2025.10.22</td></tr><tr><th>층</th><td>15층</td></tr><tr><th>건축년도</th><td>2009년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="8" onclick="handleRowClick(8)"><td class="rank-cell">9</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#fd79a8;"></span>아크로서울포레스트 <span class="arrow" id="arrow-9">▼</span></td><td class="loc-cell">서울시 성동구</td><td class="price">2억 4,200만</td></tr>
-<tr class="detail-row" id="detail-9"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>성수동1가</td></tr><tr><th>전용면적</th><td>206.13㎡ (62.5평)</td></tr><tr><th>거래금액</th><td>151억</td></tr><tr><th>거래일</th><td>2025.11.08</td></tr><tr><th>층</th><td>28층</td></tr><tr><th>건축년도</th><td>2020년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="9" onclick="handleRowClick(9)"><td class="rank-cell">10</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#e17055;"></span>갤러리아포레 <span class="arrow" id="arrow-10">▼</span></td><td class="loc-cell">서울시 성동구</td><td class="price">2억 3,600만</td></tr>
-<tr class="detail-row" id="detail-10"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>성수동1가</td></tr><tr><th>전용면적</th><td>178.65㎡ (54.1평)</td></tr><tr><th>거래금액</th><td>127.5억</td></tr><tr><th>거래일</th><td>2025.10.30</td></tr><tr><th>층</th><td>20층</td></tr><tr><th>건축년도</th><td>2011년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="10" onclick="handleRowClick(10)"><td class="rank-cell">11</td><td class="change-cell"><span style="color:#00d4aa;">▲2</span></td><td class="apt-name"><span class="color-dot" style="background:#00b894;"></span>트리마제 <span class="arrow" id="arrow-11">▼</span></td><td class="loc-cell">서울시 성동구</td><td class="price">2억 2,900만</td></tr>
-<tr class="detail-row" id="detail-11"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>성수동1가</td></tr><tr><th>전용면적</th><td>122.69㎡ (37.2평)</td></tr><tr><th>거래금액</th><td>85억</td></tr><tr><th>거래일</th><td>2025.12.02</td></tr><tr><th>층</th><td>35층</td></tr><tr><th>건축년도</th><td>2017년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="11" onclick="handleRowClick(11)"><td class="rank-cell">12</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#6c5ce7;"></span>도곡렉슬 <span class="arrow" id="arrow-12">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 2,300만</td></tr>
-<tr class="detail-row" id="detail-12"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>도곡동</td></tr><tr><th>전용면적</th><td>84.99㎡ (25.8평)</td></tr><tr><th>거래금액</th><td>57.5억</td></tr><tr><th>거래일</th><td>2025.11.25</td></tr><tr><th>층</th><td>18층</td></tr><tr><th>건축년도</th><td>2003년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="12" onclick="handleRowClick(12)"><td class="rank-cell">13</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#fdcb6e;"></span>잠실엘스 <span class="arrow" id="arrow-13">▼</span></td><td class="loc-cell">서울시 송파구</td><td class="price">2억 1,800만</td></tr>
-<tr class="detail-row" id="detail-13"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>잠실동</td></tr><tr><th>전용면적</th><td>84.82㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>56억</td></tr><tr><th>거래일</th><td>2025.12.10</td></tr><tr><th>층</th><td>22층</td></tr><tr><th>건축년도</th><td>2008년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="13" onclick="handleRowClick(13)"><td class="rank-cell">14</td><td class="change-cell"><span style="color:#ff4757;">▼2</span></td><td class="apt-name"><span class="color-dot" style="background:#e84393;"></span>잠실리센츠 <span class="arrow" id="arrow-14">▼</span></td><td class="loc-cell">서울시 송파구</td><td class="price">2억 1,200만</td></tr>
-<tr class="detail-row" id="detail-14"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>잠실동</td></tr><tr><th>전용면적</th><td>84.99㎡ (25.8평)</td></tr><tr><th>거래금액</th><td>54.5억</td></tr><tr><th>거래일</th><td>2025.11.18</td></tr><tr><th>층</th><td>19층</td></tr><tr><th>건축년도</th><td>2008년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="14" onclick="handleRowClick(14)"><td class="rank-cell">15</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#636e72;"></span>타워팰리스3차 <span class="arrow" id="arrow-15">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">2억 800만</td></tr>
-<tr class="detail-row" id="detail-15"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>도곡동</td></tr><tr><th>전용면적</th><td>163.23㎡ (49.5평)</td></tr><tr><th>거래금액</th><td>103억</td></tr><tr><th>거래일</th><td>2025.10.15</td></tr><tr><th>층</th><td>55층</td></tr><tr><th>건축년도</th><td>2004년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="15" onclick="handleRowClick(15)"><td class="rank-cell">16</td><td class="change-cell"><span style="color:#00d4aa;">▲1</span></td><td class="apt-name"><span class="color-dot" style="background:#fab1a0;"></span>헬리오시티 <span class="arrow" id="arrow-16">▼</span></td><td class="loc-cell">서울시 송파구</td><td class="price">2억 200만</td></tr>
-<tr class="detail-row" id="detail-16"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>가락동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>52억</td></tr><tr><th>거래일</th><td>2025.12.05</td></tr><tr><th>층</th><td>28층</td></tr><tr><th>건축년도</th><td>2018년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="16" onclick="handleRowClick(16)"><td class="rank-cell">17</td><td class="change-cell"><span style="color:#ff4757;">▼1</span></td><td class="apt-name"><span class="color-dot" style="background:#74b9ff;"></span>래미안대치팰리스 <span class="arrow" id="arrow-17">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">1억 9,800만</td></tr>
-<tr class="detail-row" id="detail-17"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>대치동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>51억</td></tr><tr><th>거래일</th><td>2025.11.22</td></tr><tr><th>층</th><td>16층</td></tr><tr><th>건축년도</th><td>2015년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="17" onclick="handleRowClick(17)"><td class="rank-cell">18</td><td class="change-cell"><span style="color:#888;">─</span></td><td class="apt-name"><span class="color-dot" style="background:#55efc4;"></span>반포래미안아이파크 <span class="arrow" id="arrow-18">▼</span></td><td class="loc-cell">서울시 서초구</td><td class="price">1억 9,500만</td></tr>
-<tr class="detail-row" id="detail-18"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>반포동</td></tr><tr><th>전용면적</th><td>59.96㎡ (18.2평)</td></tr><tr><th>거래금액</th><td>35.5억</td></tr><tr><th>거래일</th><td>2025.10.28</td></tr><tr><th>층</th><td>12층</td></tr><tr><th>건축년도</th><td>2018년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="18" onclick="handleRowClick(18)"><td class="rank-cell">19</td><td class="change-cell"><span style="color:#00d4aa;">▲3</span></td><td class="apt-name"><span class="color-dot" style="background:#b2bec3;"></span>은마아파트 <span class="arrow" id="arrow-19">▼</span></td><td class="loc-cell">서울시 강남구</td><td class="price">1억 9,200만</td></tr>
-<tr class="detail-row" id="detail-19"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>대치동</td></tr><tr><th>전용면적</th><td>84.43㎡ (25.6평)</td></tr><tr><th>거래금액</th><td>49.2억</td></tr><tr><th>거래일</th><td>2025.12.12</td></tr><tr><th>층</th><td>8층</td></tr><tr><th>건축년도</th><td>1979년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-<tr class="main-row" data-idx="19" onclick="handleRowClick(19)"><td class="rank-cell">20</td><td class="change-cell"><span style="color:#00d4aa;">▲4</span></td><td class="apt-name"><span class="color-dot" style="background:#ff7675;"></span>올림픽파크포레온 <span class="arrow" id="arrow-20">▼</span></td><td class="loc-cell">서울시 강동구</td><td class="price">1억 8,900만</td></tr>
-<tr class="detail-row" id="detail-20"><td colspan="5"><div class="detail-content"><div class="detail-info"><table class="detail-table"><tr><th>동</th><td>둔촌동</td></tr><tr><th>전용면적</th><td>84.98㎡ (25.7평)</td></tr><tr><th>거래금액</th><td>48.6억</td></tr><tr><th>거래일</th><td>2025.11.30</td></tr><tr><th>층</th><td>42층</td></tr><tr><th>건축년도</th><td>2024년</td></tr></table></div><div class="detail-map"><div class="map-placeholder">🗺️ Google Maps<br>(API 연동 후 표시)</div></div></div></td></tr>
-
-</tbody></table>
-
-<div class="footer">마지막 업데이트: 2026.02.05 09:00 · 데이터 출처: 국토교통부 실거래가 공개시스템</div>
+<div class="footer">마지막 업데이트: 2026.02.20 11:08 · 데이터 출처: 국토교통부 실거래가 공개시스템</div>
 </div>
 
 <script>
-/* ── Sample per-apartment data (replaced by fetch_data.py in production) ── */
-const aptLabels = ["2023.02","2023.03","2023.04","2023.05","2023.06","2023.07","2023.08","2023.09","2023.10","2023.11","2023.12","2024.01","2024.02","2024.03","2024.04","2024.05","2024.06","2024.07","2024.08","2024.09","2024.10","2024.11","2024.12","2025.01","2025.02","2025.03","2025.04","2025.05","2025.06","2025.07","2025.08","2025.09","2025.10","2025.11","2025.12","2026.01"];
+const aptLabels = ["2025.02", "2025.03", "2025.04", "2025.05", "2025.06", "2025.07", "2025.08", "2025.09", "2025.10", "2025.11", "2025.12", "2026.01", "2026.02"];
+const aptDatasets = [{
+            label:'래미안원베일리',data:[22892, 22785, null, null, 24198, 24450, 25910, null, 24096, 25078, null, null, 23782],borderColor:'#00d4aa',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'아크로리버파크',data:[20406, 19517, null, 20709, 20119, 19732, null, 21499, null, 24767, null, null, null],borderColor:'#4ecdc4',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'현대5차(71,72동)',data:[19865, 20467, 20868, 25283, null, null, null, 24681, null, null, null, null, null],borderColor:'#ff6b6b',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'현대14차(203,204,205,206동)',data:[19416, 20202, null, null, 22140, 24658, 24476, null, null, 24659, null, null, null],borderColor:'#45b7d1',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'아크로리버뷰신반포',data:[null, 18413, null, 17228, 18090, null, null, null, null, null, null, null, 22703],borderColor:'#96ceb4',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'현대3차(61~64동)',data:[17600, 18800, 21200, 20000, 21900, 21200, null, 24000, null, 24280, null, null, null],borderColor:'#ffeaa7',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'아크로서울포레스트',data:[null, null, null, 31132, 34936, 17521, 16048, 24191, null, null, null, null, null],borderColor:'#dfe6e9',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'신현대11차',data:[null, 16132, 17674, 19172, 19207, 19250, 16193, 18480, 19162, null, 20822, null, null],borderColor:'#a29bfe',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'반포센트럴자이',data:[16006, 17176, null, 16673, 19400, 19360, null, 18335, 19345, 17419, 22503, null, null],borderColor:'#fd79a8',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'트리마제',data:[15312, 13845, 14814, 14691, 16406, null, 16407, 15290, 19726, null, 20688, 18511, null],borderColor:'#e17055',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'래미안퍼스티지',data:[15956, 15688, 17485, 17485, 17605, 16408, null, 14825, null, 19708, 17435, 16242, 22342],borderColor:'#00b894',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'미성2차',data:[15857, 15352, 18576, 17338, 19692, 22177, 18034, null, 18909, 22177, null, null, null],borderColor:'#6c5ce7',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'래미안원펜타스',data:[null, 18288, null, null, null, null, null, null, null, 21767, null, null, null],borderColor:'#fdcb6e',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'반포르엘',data:[15990, 16705, null, null, 18100, null, null, null, 20154, null, null, null, null],borderColor:'#e84393',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'한남더힐',data:[null, 20524, null, null, 19904, null, null, 21176, null, 19546, null, null, null],borderColor:'#636e72',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'신현대9차',data:[16011, 16640, 18791, 17777, 19549, 21438, null, null, 20768, null, 18420, 21146, null],borderColor:'#fab1a0',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'디에이치반포라클라스',data:[13604, 15501, null, 16028, 17686, 15085, 15939, 20077, null, 20216, 14943, null, null],borderColor:'#74b9ff',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'현대4차저층(51~56동)',data:[null, null, 20991, null, null, null, null, null, null, null, 20431, null, null],borderColor:'#55efc4',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'반포자이',data:[15083, 14164, null, 16210, 14966, 17809, 12385, 17096, 15148, 11886, 19464, 19632, null],borderColor:'#b2bec3',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },{
+            label:'신반포2',data:[14590, 14707, 16364, 16460, 16524, 17480, 18413, 18778, 17962, 18190, 16176, 17577, 20113],borderColor:'#ff7675',
+            backgroundColor:'transparent',tension:0.3,
+            pointRadius:0,pointHoverRadius:4,borderWidth:1.5,
+            spanGaps:true
+        },];
+const avgLabels = ["2025.02", "2025.03", "2025.04", "2025.05", "2025.06", "2025.07", "2025.08", "2025.09", "2025.10", "2025.11", "2025.12", "2026.01", "2026.02"];
+const avgValues = [17149, 16693, 18120, 17522, 18573, 20025, 19061, 19195, 19174, 20513, 18508, 18470, 22329];
 
-function genLine(base, volatility, seed) {
-    const arr = [];
-    let v = base;
-    let s = seed;
-    for (let i = 0; i < aptLabels.length; i++) {
-        s = (s * 9301 + 49297) % 233280;
-        const r = s / 233280;
-        v += Math.round((r - 0.38) * volatility);
-        if (r > 0.92) { arr.push(null); } else { arr.push(v); }
-    }
-    return arr;
-}
+const COLORS = ["#00d4aa", "#4ecdc4", "#ff6b6b", "#45b7d1", "#96ceb4", "#ffeaa7", "#dfe6e9", "#a29bfe", "#fd79a8", "#e17055", "#00b894", "#6c5ce7", "#fdcb6e", "#e84393", "#636e72", "#fab1a0", "#74b9ff", "#55efc4", "#b2bec3", "#ff7675"];
 
-const aptNames = ["아크로리버파크","래미안원베일리","한남더힐","더펜트하우스청담","나인원한남","브라이튼N40","래미안퍼스티지","반포자이","아크로서울포레스트","갤러리아포레","트리마제","도곡렉슬","잠실엘스","잠실리센츠","타워팰리스3차","헬리오시티","래미안대치팰리스","반포래미안아이파크","은마아파트","올림픽파크포레온"];
-const basePrices = [30000,29000,27000,26000,25500,24000,23000,22500,22000,21500,21000,20000,19500,19000,18500,18000,17500,17000,16500,16000];
-
-const aptDatasets = aptNames.map((name, i) => ({
-    label: name,
-    data: genLine(basePrices[i], 600, (i+1)*137),
-    borderColor: 'transparent',
-    backgroundColor: 'transparent',
-    tension: 0.3,
-    pointRadius: 0,
-    pointHoverRadius: 4,
-    borderWidth: 1.5,
-    spanGaps: true
-}));
-
-const COLORS = ["#00d4aa","#4ecdc4","#ff6b6b","#45b7d1","#96ceb4","#ffeaa7","#dfe6e9","#a29bfe","#fd79a8","#e17055","#00b894","#6c5ce7","#fdcb6e","#e84393","#636e72","#fab1a0","#74b9ff","#55efc4","#b2bec3","#ff7675"];
-
-/* ── 클릭 인터랙션 ── */
+/* ── Chart.js: 아파트별 추이 ── */
 const ctx = document.getElementById('trendChart').getContext('2d');
 const datasets = aptDatasets.map((d, i) => ({
     ...d,
