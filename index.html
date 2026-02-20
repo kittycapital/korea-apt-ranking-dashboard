@@ -44,6 +44,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-primary);color:va
 .share-btn-s.instagram.copied{border-color:var(--accent-green);color:var(--accent-green)}
 .share-btn-s.copy:hover{border-color:var(--accent-green);color:var(--accent-green)}
 .share-btn-s.copy.copied{border-color:var(--accent-green);color:var(--accent-green)}
+.share-btn-s.copied .label-text{font-weight:600}
 
 /* Toast */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#222;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;border:1px solid #333}
@@ -213,25 +214,74 @@ function shareTelegram() {
 }
 function shareInstagram(btn) {
     doCopy(SHARE_URL);
-    if (btn) { btn.classList.add('copied'); setTimeout(() => btn.classList.remove('copied'), 2000); }
+    if (btn) showCopied(btn);
     showToast('링크가 복사되었습니다. 인스타그램 스토리에 붙여넣기 하세요');
 }
 function copyLink(btn) {
     doCopy(SHARE_URL);
-    if (btn) { btn.classList.add('copied'); setTimeout(() => btn.classList.remove('copied'), 2000); }
+    if (btn) showCopied(btn);
     showToast('링크가 복사되었습니다');
 }
+function showCopied(btn) {
+    btn.classList.add('copied');
+    const svg = btn.querySelector('svg');
+    const label = btn.querySelector('.label-text');
+    const origSvg = svg ? svg.outerHTML : '';
+    const origLabel = label ? label.textContent : '';
+    if (svg) svg.outerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+    if (label) label.textContent = '복사됨!';
+    setTimeout(() => {
+        btn.classList.remove('copied');
+        const newSvg = btn.querySelector('svg');
+        if (newSvg && origSvg) newSvg.outerHTML = origSvg;
+        if (label) label.textContent = origLabel;
+    }, 2000);
+}
 function doCopy(text) {
-    if (navigator.clipboard && window.isSecureContext && !window.frameElement) {
-        navigator.clipboard.writeText(text); return;
-    }
+    // 방법1: Clipboard API (top-level + secure context)
     try {
-        const ta = document.createElement('textarea');
-        ta.value = text; ta.setAttribute('readonly','');
-        ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;pointer-events:none;';
-        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,ta.value.length);
-        document.execCommand('copy'); document.body.removeChild(ta);
-    } catch(e) { window.prompt('링크를 복사하세요:', text); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).catch(function(){
+                fallbackCopy(text);
+            });
+            return;
+        }
+    } catch(e) {}
+    fallbackCopy(text);
+}
+function fallbackCopy(text) {
+    // 방법2: execCommand
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '0';
+    ta.style.top = '0';
+    ta.style.width = '2em';
+    ta.style.height = '2em';
+    ta.style.padding = '0';
+    ta.style.border = 'none';
+    ta.style.outline = 'none';
+    ta.style.boxShadow = 'none';
+    ta.style.background = 'transparent';
+    ta.style.opacity = '0.01';
+    document.body.appendChild(ta);
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        ta.contentEditable = true;
+        ta.readOnly = true;
+        var range = document.createRange();
+        range.selectNodeContents(ta);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        ta.setSelectionRange(0, 999999);
+    } else {
+        ta.focus();
+        ta.select();
+        ta.setSelectionRange(0, ta.value.length);
+    }
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
 }
 function showToast(msg) {
     const t = document.getElementById('toast');
