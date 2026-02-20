@@ -1,32 +1,50 @@
 """
-전국 아파트 대시보드 통합 데이터 수집기
+전국 아파트 대시보드 통합 데이터 처리기 (CSV 버전)
 ─────────────────────────────────────
-하나의 API 호출 세트로 두 가지 대시보드 데이터를 모두 생성:
+CSV 파일에서 데이터를 읽어 두 가지 대시보드 데이터를 생성:
   1) 전국 구별 TOP 10  → data/district_top10.json  (index.html 에서 사용)
   2) 서울 아파트 TOP 20 → seoul.html               (인라인 데이터)
 
-- 데이터: 국토교통부 아파트 매매 실거래가 API
+- 데이터 소스: 국토교통부 실거래가 공개시스템 CSV 다운로드
 - 필터: 전용면적 59㎡ 이상
 - 기간: TOP 산정 최근 6개월 / 추이 차트 최근 3년
 """
 
-import requests
-import xml.etree.ElementTree as ET
+import csv
+import glob
 from datetime import datetime, timedelta
 from collections import defaultdict
-import os, json, time, re
+import os, json, re
 
 # ── 설정 ──
-API_KEY = os.environ.get('MOLIT_API_KEY', '')
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
-BASE_URL = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev"
 DATA_DIR = 'data'
+CSV_DIR = os.path.join(DATA_DIR, 'csv')
 MIN_AREA = 59
 
-# API 호출 간 대기 (초) — 레이트 리밋 방지
-DELAY_PER_REQUEST = 0.5    # 매 요청 후 대기
-DELAY_PER_REGION = 1.0     # 지역 완료 후 추가 대기
-RETRY_BASE_DELAY = 10      # 429 에러 시 기본 대기 (10, 20, 40, 80, 160초 백오프)
+# ── 시도 이름 매핑 (CSV 풀네임 → REGIONS 약칭) ──
+SIDO_MAP = {
+    '서울특별시': '서울시',
+    '부산광역시': '부산시',
+    '대구광역시': '대구시',
+    '인천광역시': '인천시',
+    '광주광역시': '광주시',
+    '대전광역시': '대전시',
+    '울산광역시': '울산시',
+    '세종특별자치시': '세종시',
+    '경기도': '경기도',
+    '강원특별자치도': '강원도',
+    '충청북도': '충북',
+    '충청남도': '충남',
+    '전북특별자치도': '전북',
+    '전라남도': '전남',
+    '경상북도': '경북',
+    '경상남도': '경남',
+    '제주특별자치도': '제주도',
+    # 이전 명칭 호환
+    '강원도': '강원도',
+    '전라북도': '전북',
+}
 
 # ── 전국 지역코드 (서울 + 전국) ──
 REGIONS = {
@@ -171,6 +189,170 @@ SEOUL_CODES = {k for k, v in REGIONS.items() if v[0] == '서울시'}
 
 
 # ════════════════════════════════════════
+# CSV 데이터 로딩
+# ════════════════════════════════════════
+
+def build_reverse_map():
+    """(sido_short, sigungu) → region_code 역방향 매핑 생성"""
+    rmap = {}
+    for code, (sido, sigungu) in REGIONS.items():
+        rmap[(sido, sigungu)] = code
+    return rmap
+
+REVERSE_REGION = build_reverse_map()
+
+
+def parse_address(addr_str):
+    """
+    CSV '시군구' 컬럼을 파싱하여 (sido_short, sigungu, dong, region_code) 반환
+    
+    예시:
+      "서울특별시 강남구 역삼동"         → (서울시, 강남구, 역삼동, 11680)
+      "경기도 고양시 덕양구 행신동"       → (경기도, 고양시 덕양구, 행신동, 41281)
+      "경기도 용인시 처인구 이동읍 천리"  → (경기도, 용인시 처인구, 이동읍, 41461)
+      "세종특별자치시 종촌동"            → (세종시, 세종시, 종촌동, 36110)
+    """
+    parts = addr_str.strip().split()
+    if len(parts) < 2:
+        return None, None, None, None
+
+    sido_full = parts[0]
+    sido_short = SIDO_MAP.get(sido_full, sido_full)
+    rest = parts[1:]
+
+    # 가장 긴 매치부터 시도 (예: "고양시 덕양구" → 2단어 매치)
+    for n in range(min(len(rest), 3), 0, -1):
+        candidate = ' '.join(rest[:n])
+        key = (sido_short, candidate)
+        if key in REVERSE_REGION:
+            dong = ' '.join(rest[n:]) if n < len(rest) else ''
+            return sido_short, candidate, dong, REVERSE_REGION[key]
+
+    # 세종시 특수 처리: 시군구 없이 바로 동 이름
+    if sido_short == '세종시':
+        dong = ' '.join(rest)
+        return '세종시', '세종시', dong, REVERSE_REGION.get(('세종시', '세종시'))
+
+    return sido_short, ' '.join(rest[:1]), ' '.join(rest[1:]), None
+
+
+def load_csv_file(filepath):
+    """단일 CSV 파일 로드 → 거래 데이터 리스트 반환"""
+    items = []
+    encodings = ['euc-kr', 'cp949', 'utf-8-sig', 'utf-8']
+
+    for enc in encodings:
+        try:
+            with open(filepath, 'r', encoding=enc) as f:
+                reader = csv.reader(f)
+                header_found = False
+                for row in reader:
+                    # 헤더 행 찾기 (첫 번째 셀이 "NO"인 행)
+                    if not header_found:
+                        if len(row) > 0 and row[0].strip('"') == 'NO':
+                            header_found = True
+                        continue
+
+                    if len(row) < 15:
+                        continue
+
+                    # 전용면적 필터
+                    try:
+                        area = float(row[6].strip())
+                    except:
+                        continue
+                    if area < MIN_AREA:
+                        continue
+
+                    # 거래금액
+                    price_str = row[9].replace(',', '').strip()
+                    try:
+                        price = int(price_str)
+                    except:
+                        continue
+
+                    # 주소 파싱
+                    sido, sigungu, dong, region_code = parse_address(row[1])
+                    if not region_code:
+                        continue
+
+                    # 계약년월 (202602 → year=2026, month=02)
+                    ym = row[7].strip()
+                    deal_year = ym[:4] if len(ym) >= 6 else ''
+                    deal_month = ym[4:6] if len(ym) >= 6 else ''
+                    deal_day = row[8].strip()
+
+                    # 층 (- 인 경우 빈 문자열)
+                    floor_val = row[11].strip()
+                    if floor_val == '-':
+                        floor_val = ''
+
+                    # 건축년도
+                    build_year = row[14].strip() if len(row) > 14 else ''
+
+                    items.append({
+                        'apt_name': row[5].strip(),
+                        'sido': sido,
+                        'sigungu': sigungu,
+                        'dong': dong,
+                        'area_m2': area,
+                        'area_pyeong': round(area / 3.3, 1),
+                        'price': price,
+                        'price_per_pyeong': round((price / area) * 3.3),
+                        'deal_year': deal_year,
+                        'deal_month': deal_month,
+                        'deal_day': deal_day,
+                        'floor': floor_val,
+                        'build_year': build_year,
+                        'region_code': region_code
+                    })
+            break  # 인코딩 성공
+        except UnicodeDecodeError:
+            continue
+        except Exception as e:
+            print(f"  ❌ 파일 읽기 실패 [{filepath}]: {e}")
+            return []
+
+    return items
+
+
+def load_all_csv():
+    """data/csv/ 디렉토리의 모든 CSV 파일을 읽어 통합 데이터 반환"""
+    csv_files = sorted(glob.glob(os.path.join(CSV_DIR, '*.csv')))
+    if not csv_files:
+        print(f"❌ {CSV_DIR}/ 디렉토리에 CSV 파일이 없습니다!")
+        print(f"   rt.molit.go.kr에서 CSV를 다운받아 {CSV_DIR}/ 에 넣어주세요.")
+        exit(1)
+
+    print(f"📂 CSV 파일 {len(csv_files)}개 발견\n")
+
+    all_items = []
+    seen = set()  # 중복 제거용
+
+    for filepath in csv_files:
+        fname = os.path.basename(filepath)
+        items = load_csv_file(filepath)
+
+        # 중복 제거 (같은 거래 건이 여러 CSV에 포함될 수 있음)
+        new_count = 0
+        for it in items:
+            key = (
+                it['apt_name'], it['region_code'], it['area_m2'],
+                it['deal_year'], it['deal_month'], it['deal_day'],
+                it['price'], it['floor']
+            )
+            if key not in seen:
+                seen.add(key)
+                all_items.append(it)
+                new_count += 1
+
+        print(f"  ✅ {fname}: {len(items)}건 로드, {new_count}건 추가 (중복 {len(items)-new_count}건 제외)")
+
+    print(f"\n  → 총 {len(all_items)}건 (중복 제거 후)\n")
+    return all_items
+
+
+# ════════════════════════════════════════
 # 공통 유틸
 # ════════════════════════════════════════
 
@@ -181,83 +363,6 @@ def get_months(n):
         d = today.replace(day=1) - timedelta(days=30*i)
         months.add(d.strftime('%Y%m'))
     return sorted(months)
-
-
-def fetch(code, ym, retries=5):
-    """단일 API 호출 (429 레이트 리밋 자동 재시도)"""
-    params = {
-        'serviceKey': API_KEY, 'LAWD_CD': code,
-        'DEAL_YMD': ym, 'pageNo': '1', 'numOfRows': '9999'
-    }
-    for attempt in range(retries):
-        try:
-            r = requests.get(BASE_URL, params=params, timeout=30)
-            # 429 Too Many Requests → 대기 후 재시도
-            if r.status_code == 429:
-                wait = RETRY_BASE_DELAY * (2 ** attempt)  # 10, 20, 40, 80, 160초
-                print(f"  ⏳ 429 Rate limit [{code}/{ym}] → {wait}초 대기 (재시도 {attempt+1}/{retries})")
-                time.sleep(wait)
-                continue
-            r.raise_for_status()
-            # API 에러 체크
-            rc = re.search(r'<resultCode>(\d+)</resultCode>', r.text)
-            rm = re.search(r'<resultMsg>([^<]+)</resultMsg>', r.text)
-            if rc and rc.group(1) not in ('00', '000'):
-                print(f"  ⚠️ API Error [{code}/{ym}]: {rc.group(1)} - {rm.group(1) if rm else 'unknown'}")
-                return []
-            time.sleep(DELAY_PER_REQUEST)
-            return parse(r.text, code)
-        except requests.exceptions.HTTPError as e:
-            if '429' in str(e):
-                wait = RETRY_BASE_DELAY * (2 ** attempt)
-                print(f"  ⏳ 429 Rate limit [{code}/{ym}] → {wait}초 대기 (재시도 {attempt+1}/{retries})")
-                time.sleep(wait)
-                continue
-            print(f"  ❌ Request failed [{code}/{ym}]: {e}")
-            return []
-        except Exception as e:
-            print(f"  ❌ Request failed [{code}/{ym}]: {e}")
-            return []
-    print(f"  ❌ 재시도 초과 [{code}/{ym}]")
-    return []
-
-
-def parse(xml_text, code):
-    items = []
-    try:
-        root = ET.fromstring(xml_text)
-        for it in root.findall('.//item'):
-            area = float(gt(it, 'excluUseAr', '0'))
-            if area < MIN_AREA:
-                continue
-            ps = gt(it, 'dealAmount', '0').replace(',', '').strip()
-            try:
-                price = int(ps)
-            except:
-                continue
-            sido, sigungu = REGIONS.get(code, ('', ''))
-            items.append({
-                'apt_name': gt(it, 'aptNm', ''),
-                'sido': sido, 'sigungu': sigungu,
-                'dong': gt(it, 'umdNm', ''),
-                'area_m2': area, 'area_pyeong': round(area / 3.3, 1),
-                'price': price,
-                'price_per_pyeong': round((price / area) * 3.3),
-                'deal_year': gt(it, 'dealYear', ''),
-                'deal_month': gt(it, 'dealMonth', ''),
-                'deal_day': gt(it, 'dealDay', ''),
-                'floor': gt(it, 'floor', ''),
-                'build_year': gt(it, 'buildYear', ''),
-                'region_code': code
-            })
-    except:
-        pass
-    return items
-
-
-def gt(el, tag, d=''):
-    c = el.find(tag)
-    return c.text.strip() if c is not None and c.text else d
 
 
 def fb(p):
@@ -271,43 +376,6 @@ def fp(p):
     b = p // 10000
     r = p % 10000
     return f"{b}억 {r:,}만" if b > 0 else f"{p:,}만"
-
-
-# ════════════════════════════════════════
-# Step 1: 데이터 수집 (한 번만)
-# ════════════════════════════════════════
-
-def fetch_all_recent(months_6):
-    """전 지역 최근 6개월 데이터 수집"""
-    print(f"Step 1: 전 지역 6개월 데이터 수집 ({months_6[0]}~{months_6[-1]})")
-    print(f"  → {len(REGIONS)}개 지역 × {len(months_6)}개월 = 예상 {len(REGIONS)*len(months_6)}건 API 호출\n")
-
-    recent = []
-    total = len(REGIONS)
-    for i, (code, (s, g)) in enumerate(REGIONS.items(), 1):
-        for m in months_6:
-            recent.extend(fetch(code, m))
-        if i % 10 == 0:
-            print(f"  [{i}/{total}] {s} {g}...")
-            time.sleep(DELAY_PER_REGION)
-    print(f"  → 총 {len(recent)}건 수집 완료\n")
-    return recent
-
-
-def fetch_history(codes_needed, months_extra):
-    """필요한 지역의 히스토리 데이터 추가 수집"""
-    print(f"Step 2: 히스토리 수집 ({len(months_extra)}개월 × {len(codes_needed)}개 지역)")
-    history = []
-    done = 0
-    for code in codes_needed:
-        for m in months_extra:
-            history.extend(fetch(code, m))
-        done += 1
-        if done % 5 == 0:
-            print(f"  [{done}/{len(codes_needed)}]...")
-            time.sleep(DELAY_PER_REGION)
-    print(f"  → {len(history)}건 추가 수집\n")
-    return history
 
 
 # ════════════════════════════════════════
@@ -868,79 +936,39 @@ function toggleDetail(id) {{
 
 def main():
     print("=" * 60)
-    print("  통합 아파트 대시보드 데이터 수집기")
+    print("  통합 아파트 대시보드 (CSV 버전)")
     print("  (전국 구별 TOP 10 + 서울 TOP 20)")
     print("=" * 60 + "\n")
 
-    if not API_KEY or API_KEY == 'YOUR_API_KEY_HERE':
-        print("❌ MOLIT_API_KEY가 설정되지 않았습니다!")
-        exit(1)
-    print(f"✅ API Key: {API_KEY[:8]}...{API_KEY[-4:]}")
-
-    # API 테스트
-    test_ym = get_months(1)[0]
-    test_url = f"{BASE_URL}?serviceKey={API_KEY}&LAWD_CD=11680&DEAL_YMD={test_ym}&pageNo=1&numOfRows=1"
-    try:
-        tr = requests.get(test_url, timeout=15)
-        rc = re.search(r'<resultCode>(\d+)</resultCode>', tr.text)
-        rc_val = rc.group(1) if rc else ''
-        if rc_val in ('00', '000'):
-            print(f"✅ API 테스트 성공 (강남구 {test_ym})\n")
-        else:
-            rm = re.search(r'<resultMsg>([^<]+)</resultMsg>', tr.text)
-            msg = rm.group(1) if rm else tr.text[:200]
-            print(f"❌ API 테스트 실패: {rc_val} - {msg}")
-            exit(1)
-    except Exception as e:
-        print(f"❌ API 연결 실패: {e}")
-        exit(1)
-
     os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(CSV_DIR, exist_ok=True)
 
-    # ── Step 1: 전 지역 최근 6개월 (한 번에) ──
+    # ── Step 1: CSV 파일에서 전체 데이터 로드 ──
+    print("Step 1: CSV 데이터 로드\n")
+    alldata = load_all_csv()
+
+    if len(alldata) == 0:
+        print("\n❌ 데이터를 로드하지 못했습니다!")
+        exit(1)
+
+    # ── 최근 6개월 데이터 분리 ──
     months_6 = get_months(6)
     months_6_set = set(months_6)
-    recent = fetch_all_recent(months_6)
-
-    if len(recent) == 0:
-        print("\n❌ 데이터를 가져오지 못했습니다!")
-        exit(1)
+    recent = [
+        it for it in alldata
+        if f"{it['deal_year']}{it['deal_month'].zfill(2)}" in months_6_set
+    ]
 
     # 서울 데이터 분리
-    recent_seoul = [it for it in recent if it['region_code'] in SEOUL_CODES]
-    print(f"  서울 데이터: {len(recent_seoul)}건 / 전국: {len(recent)}건\n")
-
-    # ── 히스토리에 필요한 지역코드 파악 ──
-    # 전국 구별 TOP 10용 코드
-    district_codes = set()
-    by_district = defaultdict(list)
-    for it in recent:
-        key = f"{it['sido']}|{it['sigungu']}"
-        by_district[key].append(it)
-    for key, items in by_district.items():
-        for it in items:
-            district_codes.add(it['region_code'])
-
-    # 서울 TOP 20용 코드
-    t20_preview = seoul_top20(recent_seoul)
-    seoul_history_codes = set(it['region_code'] for it in t20_preview) if t20_preview else set()
-
-    # 합집합 (중복 제거)
-    all_history_codes = district_codes | seoul_history_codes
-    print(f"  히스토리 필요 지역: {len(all_history_codes)}개 (구별 {len(district_codes)} + 서울 TOP20 {len(seoul_history_codes)} → 합집합 {len(all_history_codes)})\n")
-
-    # ── Step 2: 히스토리 수집 (한 번에) ──
-    months_36 = get_months(36)
-    months_extra = [m for m in months_36 if m not in months_6_set]
-    history = fetch_history(all_history_codes, months_extra)
-
-    # 전체 데이터 = 최근 + 히스토리
-    alldata = recent + history
     alldata_seoul = [it for it in alldata if it['region_code'] in SEOUL_CODES]
-    print(f"  전체 데이터: {len(alldata)}건 (서울 {len(alldata_seoul)}건)\n")
+    recent_seoul = [it for it in recent if it['region_code'] in SEOUL_CODES]
 
-    # ── Step 3: 대시보드 생성 ──
-    print("Step 3: 대시보드 생성\n")
+    print(f"  전체: {len(alldata)}건")
+    print(f"  최근 6개월: {len(recent)}건")
+    print(f"  서울 전체: {len(alldata_seoul)}건 / 최근 6개월: {len(recent_seoul)}건\n")
+
+    # ── Step 2: 대시보드 생성 ──
+    print("Step 2: 대시보드 생성\n")
 
     # 대시보드 1: 전국 구별 TOP 10
     build_district_data(recent, alldata, months_6_set)
