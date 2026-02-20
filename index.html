@@ -3,44 +3,78 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>전국 구별 아파트 평당가 TOP 10</title>
+<meta property="og:title" content="전국 구별 아파트 평당가 TOP 10 | HerdVibe">
+<meta property="og:description" content="최근 6개월 실거래 기준 · 전용면적 59㎡ 이상 · 단지별 최고가">
+<meta property="og:url" content="https://herdvibe.com/37">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Noto Sans KR',sans-serif;background:#000;color:#fff;min-height:100vh;padding:40px 20px}
-.container{max-width:1200px;margin:0 auto}
-h1{font-size:2rem;font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
-.subtitle{color:#888;font-size:0.9rem;margin-bottom:24px}
+::-webkit-scrollbar{display:none}
+*{-ms-overflow-style:none;scrollbar-width:none}
 
-/* Tabs */
-.tab-section{background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:16px}
-.tab-group-label{font-size:0.7rem;color:#555;margin-bottom:6px;letter-spacing:1px}
-.tab-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+:root{
+--bg-primary:#0a0a0a;--bg-secondary:#111111;--bg-tertiary:#1a1a1a;
+--text-primary:#ffffff;--text-secondary:#888888;--text-muted:#555555;
+--accent-green:#00d4aa;--accent-red:#ff4757;--border-color:#2a2a2a;
+}
+
+html,body{overflow-x:hidden}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh;padding:40px 20px}
+.container{max-width:1200px;margin:0 auto}
+
+/* Header - centered */
+.header{text-align:center;padding:30px 0 20px;border-bottom:1px solid var(--border-color);margin-bottom:20px}
+.header h1{font-size:1.8rem;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px;background:linear-gradient(135deg,#fff 0%,#888 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--text-secondary);font-size:0.85rem}
+
+/* Share bar */
+.share-bar{display:flex;gap:6px;justify-content:center;margin:16px 0 4px;flex-wrap:wrap}
+.share-btn-s{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:6px;border:1px solid var(--border-color);background:var(--bg-secondary);color:#a1a1aa;font-size:11px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.share-btn-s:hover{border-color:#444;color:var(--text-primary)}
+.share-btn-s svg{width:14px;height:14px;flex-shrink:0}
+.share-btn-s.twitter:hover{border-color:#1d9bf0;color:#1d9bf0}
+.share-btn-s.kakao:hover{border-color:#fee500;color:#fee500}
+.share-btn-s.telegram:hover{border-color:#26a5e4;color:#26a5e4}
+.share-btn-s.instagram:hover{border-color:#e1306c;color:#e1306c}
+.share-btn-s.instagram.copied{border-color:var(--accent-green);color:var(--accent-green)}
+.share-btn-s.copy:hover{border-color:var(--accent-green);color:var(--accent-green)}
+.share-btn-s.copy.copied{border-color:var(--accent-green);color:var(--accent-green)}
+
+/* Toast */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#222;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;opacity:0;transition:all 0.3s;z-index:9999;pointer-events:none;border:1px solid #333}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Tabs - centered */
+.tab-section{background:var(--bg-tertiary);border-radius:12px;padding:20px;margin-bottom:16px}
+.tab-group-label{font-size:0.7rem;color:var(--text-muted);margin-bottom:6px;letter-spacing:1px;text-align:center}
+.tab-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;justify-content:center}
 .tab-row:last-child{margin-bottom:0}
 .tab{padding:7px 14px;border-radius:8px;font-size:0.82rem;cursor:pointer;border:1px solid #2a2a35;background:#111;color:#888;transition:all 0.2s;user-select:none;font-family:inherit}
 .tab:hover{background:#222;color:#ccc}
 .tab.active{background:#00d4aa;color:#000;font-weight:700;border-color:#00d4aa}
 
-/* Dropdown */
-.dropdown-area{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+/* Dropdown - centered */
+.dropdown-area{display:flex;align-items:center;gap:14px;margin-bottom:20px;justify-content:center}
 .dropdown-label{color:#888;font-size:0.85rem;white-space:nowrap}
-.dropdown-select{flex:1;max-width:280px;padding:10px 40px 10px 16px;border-radius:10px;background:#1a1a1a;border:1px solid #333;color:#fff;font-size:0.9rem;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' fill='none' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
+.dropdown-select{flex:0 1 280px;padding:10px 40px 10px 16px;border-radius:10px;background:var(--bg-tertiary);border:1px solid #333;color:#fff;font-size:0.9rem;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' fill='none' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer}
 .dropdown-select:focus{outline:none;border-color:#00d4aa}
 
 /* Cards */
 .insight-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.insight-card{background:#1a1a1a;border-radius:12px;padding:18px}
+.insight-card{background:var(--bg-tertiary);border-radius:12px;padding:18px}
 .insight-card .label{color:#888;font-size:0.78rem;margin-bottom:6px}
 .insight-card .value{font-size:1.2rem;font-weight:700}
 
 /* Chart */
-.chart-section{background:#1a1a1a;border-radius:12px;padding:24px;margin-bottom:20px}
+.chart-section{background:var(--bg-tertiary);border-radius:12px;padding:24px;margin-bottom:20px}
 .chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
 .chart-title{font-size:0.95rem;font-weight:700}
-.chart-hint{font-size:0.78rem;color:#555;margin-top:8px;text-align:center}
+.chart-hint{font-size:0.78rem;color:var(--text-muted);margin-top:8px;text-align:center}
 .toggle-btns{display:flex;gap:4px}
 .toggle-btn{background:#333;border:none;color:#aaa;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-family:inherit;transition:all 0.2s}
 .toggle-btn.active{background:#00d4aa;color:#000}
@@ -54,7 +88,7 @@ table.main-table{width:100%;border-collapse:collapse}
 table.main-table thead th{text-align:left;padding:14px 10px;border-bottom:2px solid #333;font-weight:500;color:#aaa;font-size:0.82rem}
 table.main-table thead th:last-child{text-align:right}
 .main-row{cursor:pointer;transition:background 0.25s,opacity 0.25s}
-.main-row:hover{background:#1a1a1a}
+.main-row:hover{background:var(--bg-tertiary)}
 .main-row td{padding:14px 10px;border-bottom:1px solid #222;font-size:0.93rem}
 .main-row.active-row{background:rgba(0,212,170,0.08)}
 .main-row.dimmed{opacity:0.35}
@@ -73,17 +107,30 @@ table.main-table thead th:last-child{text-align:right}
 .detail-table{width:100%;max-width:350px}
 .detail-table th{text-align:left;padding:6px 14px 6px 0;color:#666;font-weight:400;font-size:0.85rem;width:80px}
 .detail-table td{padding:6px 0;font-size:0.9rem;color:#ccc}
-.empty-msg{text-align:center;padding:60px 20px;color:#555;font-size:0.95rem}
+.empty-msg{text-align:center;padding:60px 20px;color:var(--text-muted);font-size:0.95rem}
 
-.footer{margin-top:40px;padding-top:20px;border-top:1px solid #222;color:#555;font-size:0.8rem;text-align:center}
-@media(max-width:768px){.insight-cards{grid-template-columns:1fr 1fr 1fr}.tab{padding:6px 10px;font-size:0.75rem}}
-@media(max-width:600px){body{padding:20px 12px}h1{font-size:1.4rem}.insight-cards{grid-template-columns:1fr}.chart-canvas-wrap{height:180px}.detail-content{flex-direction:column;padding:12px 8px 12px 16px;gap:12px}.main-row td{padding:10px 6px;font-size:0.85rem}}
+.footer{margin-top:40px;padding-top:20px;border-top:1px solid #222;color:var(--text-muted);font-size:0.8rem;text-align:center}
+@media(max-width:768px){.insight-cards{grid-template-columns:1fr 1fr 1fr}.tab{padding:6px 10px;font-size:0.75rem}.share-btn-s{padding:5px 8px;font-size:10px}.share-btn-s .label-text{display:none}}
+@media(max-width:600px){body{padding:20px 12px}.header h1{font-size:1.4rem}.insight-cards{grid-template-columns:1fr}.chart-canvas-wrap{height:180px}.detail-content{flex-direction:column;padding:12px 8px 12px 16px;gap:12px}.main-row td{padding:10px 6px;font-size:0.85rem}}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>🏠 전국 구별 아파트 평당가 TOP 10</h1>
+
+<!-- Header -->
+<header class="header">
+<h1>전국 구별 아파트 평당가 TOP 10</h1>
 <p class="subtitle">최근 6개월 실거래 기준 · 전용면적 59㎡ 이상 · 단지별 최고가</p>
+</header>
+
+<!-- Share Bar -->
+<div class="share-bar">
+  <button class="share-btn-s twitter" onclick="shareTwitter()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg><span class="label-text">트위터</span></button>
+  <button class="share-btn-s kakao" onclick="shareKakao()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-5.52 0-10 3.36-10 7.5 0 2.66 1.74 5 4.36 6.33-.14.53-.9 3.4-.93 3.61 0 0-.02.17.09.23.11.07.24.03.24.03.32-.04 3.7-2.42 4.28-2.83.62.09 1.27.13 1.96.13 5.52 0 10-3.36 10-7.5S17.52 3 12 3z"/></svg><span class="label-text">카카오톡</span></button>
+  <button class="share-btn-s telegram" onclick="shareTelegram()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg><span class="label-text">텔레그램</span></button>
+  <button class="share-btn-s instagram" onclick="shareInstagram(this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg><span class="label-text">인스타그램</span></button>
+  <button class="share-btn-s copy" onclick="copyLink(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span class="label-text">링크 복사</span></button>
+</div>
 
 <!-- Tabs -->
 <div class="tab-section">
@@ -109,7 +156,7 @@ table.main-table thead th:last-child{text-align:right}
 <!-- Chart -->
 <div class="chart-section" id="chartSection">
 <div class="chart-header">
-<span class="chart-title" id="chartTitle">📈 평당가 추이</span>
+<span class="chart-title" id="chartTitle">평당가 추이</span>
 <div class="toggle-btns">
 <button class="toggle-btn" onclick="setRange(12)" id="btn-1y">1년</button>
 <button class="toggle-btn" onclick="setRange(24)" id="btn-2y">2년</button>
@@ -120,7 +167,7 @@ table.main-table thead th:last-child{text-align:right}
 <div class="selected-label" id="selectedLabel"></div>
 <canvas id="trendChart"></canvas>
 </div>
-<div class="chart-hint">👆 아래 리스트에서 아파트를 클릭하면 해당 추이가 강조됩니다</div>
+<div class="chart-hint">아래 리스트에서 아파트를 클릭하면 해당 추이가 강조됩니다</div>
 </div>
 
 <!-- Table -->
@@ -132,7 +179,67 @@ table.main-table thead th:last-child{text-align:right}
 <div class="footer" id="footerText">데이터 출처: 국토교통부 실거래가 공개시스템</div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
+/* ── 공유 ── */
+const SHARE_URL = 'https://herdvibe.com/37';
+const SHARE_TITLE = '전국 구별 아파트 평당가 TOP 10';
+const SHARE_DESC = '최근 6개월 실거래 기준 · 전용면적 59㎡ 이상 · 단지별 최고가';
+
+function openUrl(url) {
+    const a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function shareTwitter() {
+    const text = encodeURIComponent(SHARE_TITLE + ' - ' + SHARE_DESC);
+    openUrl('https://twitter.com/intent/tweet?text=' + text + '&url=' + encodeURIComponent(SHARE_URL));
+}
+function shareKakao() {
+    if (typeof Kakao !== 'undefined' && Kakao.isInitialized && Kakao.isInitialized()) {
+        Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: { title: SHARE_TITLE, description: SHARE_DESC, imageUrl: '', link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL } },
+            buttons: [{ title: '자세히 보기', link: { mobileWebUrl: SHARE_URL, webUrl: SHARE_URL } }]
+        });
+    } else {
+        openUrl('https://sharer.kakao.com/talk/friends/picker/link?app_key=a43ed7b39fac35458f4f9df925a279b5&ka=sdk%2F2.7.4');
+    }
+}
+function shareTelegram() {
+    openUrl('https://t.me/share/url?url=' + encodeURIComponent(SHARE_URL) + '&text=' + encodeURIComponent(SHARE_TITLE));
+}
+function shareInstagram(btn) {
+    doCopy(SHARE_URL);
+    if (btn) { btn.classList.add('copied'); setTimeout(() => btn.classList.remove('copied'), 2000); }
+    showToast('링크가 복사되었습니다. 인스타그램 스토리에 붙여넣기 하세요');
+}
+function copyLink(btn) {
+    doCopy(SHARE_URL);
+    if (btn) { btn.classList.add('copied'); setTimeout(() => btn.classList.remove('copied'), 2000); }
+    showToast('링크가 복사되었습니다');
+}
+function doCopy(text) {
+    if (navigator.clipboard && window.isSecureContext && !window.frameElement) {
+        navigator.clipboard.writeText(text); return;
+    }
+    try {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly','');
+        ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;pointer-events:none;';
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,ta.value.length);
+        document.execCommand('copy'); document.body.removeChild(ta);
+    } catch(e) { window.prompt('링크를 복사하세요:', text); }
+}
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+try { if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) Kakao.init('a43ed7b39fac35458f4f9df925a279b5'); } catch(e) {}
+
 /* ── 지역 매핑 ── */
 const REGION_MAP = {
 "서울시":["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"],
@@ -167,7 +274,6 @@ let currentRange = 36;
 let currentLabels = [];
 let currentSeries = [];
 
-/* ── 탭 생성 ── */
 function buildTabs() {
     const m = document.getElementById('metroTabs');
     const p = document.getElementById('provTabs');
@@ -203,13 +309,10 @@ function populateDropdown() {
     const districts = REGION_MAP[currentSido] || [];
     districts.forEach(d => {
         const opt = document.createElement('option');
-        opt.value = d;
-        opt.textContent = d;
+        opt.value = d; opt.textContent = d;
         sel.appendChild(opt);
     });
-    if (!districts.includes(currentDistrict)) {
-        currentDistrict = districts[0] || '';
-    }
+    if (!districts.includes(currentDistrict)) currentDistrict = districts[0] || '';
     sel.value = currentDistrict;
 }
 
@@ -220,19 +323,15 @@ function onDistrictChange() {
     render();
 }
 
-/* ── 가격 포맷 ── */
 function fp(p) {
     const b = Math.floor(p / 10000);
     const r = p % 10000;
     return b > 0 ? b + '억 ' + r.toLocaleString() + '만' : p.toLocaleString() + '만';
 }
 
-/* ── 렌더링 ── */
 function render() {
     const key = currentSido + '|' + currentDistrict;
     const d = DATA ? DATA.data[key] : null;
-
-    // Cards
     document.getElementById('cardLabel1').textContent = currentDistrict + ' TOP 10 평균';
     if (d) {
         document.getElementById('cardVal1').textContent = fp(d.avg);
@@ -243,23 +342,17 @@ function render() {
         document.getElementById('cardVal2').textContent = '-';
         document.getElementById('cardVal3').textContent = '-';
     }
-
-    // Chart title
-    document.getElementById('chartTitle').textContent = '📈 ' + currentDistrict + ' TOP 10 평당가 추이';
-
-    // Store for range toggle
+    document.getElementById('chartTitle').textContent = currentDistrict + ' TOP 10 평당가 추이';
     currentLabels = DATA ? DATA.labels : [];
     currentSeries = d ? d.series : [];
-
     renderChart();
     renderTable(d);
 }
 
-/* ── 차트 ── */
 function renderChart() {
     if (typeof Chart === 'undefined') {
         const wrap = document.querySelector('.chart-canvas-wrap');
-        if (wrap) wrap.innerHTML = '<div style="text-align:center;padding:40px;color:#555;">차트 라이브러리 로딩 중...</div>';
+        if (wrap) wrap.innerHTML = '<div style="text-align:center;padding:40px;color:#555;">차트 로딩 중...</div>';
         return;
     }
     try {
@@ -267,36 +360,24 @@ function renderChart() {
     const datasets = currentSeries.map((vals, i) => {
         const sliced = vals.slice(-currentRange);
         return {
-            label: getAptName(i),
-            data: sliced,
-            borderColor: COLORS[i],
-            backgroundColor: 'transparent',
-            borderWidth: 1.5,
-            pointRadius: 0,
-            pointHoverRadius: 4,
-            tension: 0.3,
-            spanGaps: true,
-            _origColor: COLORS[i]
+            label: getAptName(i), data: sliced, borderColor: COLORS[i],
+            backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: 0,
+            pointHoverRadius: 4, tension: 0.3, spanGaps: true, _origColor: COLORS[i]
         };
     });
-
     if (chart) chart.destroy();
     const ctx = document.getElementById('trendChart').getContext('2d');
     chart = new Chart(ctx, {
-        type: 'line',
-        data: { labels, datasets },
+        type: 'line', data: { labels, datasets },
         options: {
             responsive: true, maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: '#1a1a1a', titleColor: '#fff',
-                    bodyColor: '#ccc', borderColor: '#333', borderWidth: 1,
+                    backgroundColor: '#1a1a1a', titleColor: '#fff', bodyColor: '#ccc', borderColor: '#333', borderWidth: 1,
                     filter: item => item.raw !== null,
-                    callbacks: {
-                        label: c => c.raw === null ? null : c.dataset.label + ': ' + fp(c.raw)
-                    }
+                    callbacks: { label: c => c.raw === null ? null : c.dataset.label + ': ' + fp(c.raw) }
                 }
             },
             scales: {
@@ -305,7 +386,6 @@ function renderChart() {
             }
         }
     });
-
     if (activeIdx >= 0) highlightChart(activeIdx);
     } catch(e) { console.warn('Chart error:', e); }
 }
@@ -323,7 +403,6 @@ function setRange(m) {
     renderChart();
 }
 
-/* ── 테이블 ── */
 function renderTable(d) {
     const tbody = document.getElementById('tableBody');
     if (!d || !d.top10.length) {
@@ -356,32 +435,22 @@ function fp_full(p) {
     return p.toLocaleString() + '만';
 }
 
-/* ── 클릭 인터랙션 ── */
 function highlightChart(idx) {
     if (!chart) return;
     const label = document.getElementById('selectedLabel');
     chart.data.datasets.forEach((ds, i) => {
-        if (i === idx) {
-            ds.borderWidth = 3.5; ds.borderColor = ds._origColor;
-            ds.pointRadius = 3; ds.pointBackgroundColor = ds._origColor;
-        } else {
-            ds.borderWidth = 1; ds.borderColor = ds._origColor + '1A'; ds.pointRadius = 0;
-        }
+        if (i === idx) { ds.borderWidth = 3.5; ds.borderColor = ds._origColor; ds.pointRadius = 3; ds.pointBackgroundColor = ds._origColor; }
+        else { ds.borderWidth = 1; ds.borderColor = ds._origColor + '1A'; ds.pointRadius = 0; }
     });
-    label.textContent = getAptName(idx);
-    label.style.color = COLORS[idx];
-    label.classList.add('show');
+    label.textContent = getAptName(idx); label.style.color = COLORS[idx]; label.classList.add('show');
     chart.update();
 }
 
 function resetChart() {
     if (!chart) return;
     const label = document.getElementById('selectedLabel');
-    chart.data.datasets.forEach(ds => {
-        ds.borderWidth = 1.5; ds.borderColor = ds._origColor; ds.pointRadius = 0;
-    });
-    label.classList.remove('show');
-    chart.update();
+    chart.data.datasets.forEach(ds => { ds.borderWidth = 1.5; ds.borderColor = ds._origColor; ds.pointRadius = 0; });
+    label.classList.remove('show'); chart.update();
 }
 
 function highlightRows(idx) {
@@ -391,40 +460,25 @@ function highlightRows(idx) {
     });
 }
 
-function resetRows() {
-    document.querySelectorAll('.main-row').forEach(row => row.classList.remove('active-row','dimmed'));
-}
+function resetRows() { document.querySelectorAll('.main-row').forEach(row => row.classList.remove('active-row','dimmed')); }
 
 function handleRowClick(idx) {
-    if (activeIdx === idx) {
-        activeIdx = -1; resetChart(); resetRows();
-    } else {
-        activeIdx = idx; highlightChart(idx); highlightRows(idx);
-        document.getElementById('chartSection').scrollIntoView({ behavior:'smooth', block:'nearest' });
-    }
+    if (activeIdx === idx) { activeIdx = -1; resetChart(); resetRows(); }
+    else { activeIdx = idx; highlightChart(idx); highlightRows(idx); document.getElementById('chartSection').scrollIntoView({ behavior:'smooth', block:'nearest' }); }
     const det = document.getElementById('detail-'+idx);
     const arr = document.getElementById('arrow-'+idx);
     if (det) det.classList.toggle('show');
     if (arr) arr.classList.toggle('open');
 }
 
-/* ── 샘플 데이터 (JSON 없을 때) ── */
 function genSample() {
     function line(base, seed) {
         const a = []; let v = base, s = seed;
-        for (let i = 0; i < 36; i++) {
-            s = (s * 9301 + 49297) % 233280;
-            v += Math.round((s/233280 - 0.38) * 500);
-            a.push(s/233280 > 0.9 ? null : v);
-        }
+        for (let i = 0; i < 36; i++) { s = (s * 9301 + 49297) % 233280; v += Math.round((s/233280 - 0.38) * 500); a.push(s/233280 > 0.9 ? null : v); }
         return a;
     }
     const labels = [];
-    for (let y = 2023; y <= 2026; y++)
-        for (let m = 1; m <= 12; m++) {
-            const l = y+'.'+String(m).padStart(2,'0');
-            if (labels.length < 36) labels.push(l);
-        }
+    for (let y = 2023; y <= 2026; y++) for (let m = 1; m <= 12; m++) { const l = y+'.'+String(m).padStart(2,'0'); if (labels.length < 36) labels.push(l); }
     const sample = {
         "서울시|강남구": { avg:28500, deals:245, top10:[
             {name:"더펜트하우스청담",dong:"청담동",area_m2:222.86,area_pyeong:67.5,price:1920000,ppyeong:28500,date:"2025.11.28",floor:"15",build_year:"2015"},
@@ -454,7 +508,6 @@ function genSample() {
     return { updated:"샘플 데이터", labels, data:sample };
 }
 
-/* ── 초기화 ── */
 async function init() {
     buildTabs();
     populateDropdown();
@@ -462,32 +515,21 @@ async function init() {
         const resp = await fetch('data/district_top10.json');
         if (resp.ok) {
             DATA = await resp.json();
-            document.getElementById('footerText').textContent =
-                '마지막 업데이트: ' + DATA.updated + ' · 데이터 출처: 국토교통부 실거래가 공개시스템';
+            document.getElementById('footerText').textContent = '마지막 업데이트: ' + DATA.updated + ' · 데이터 출처: 국토교통부 실거래가 공개시스템';
         } else throw new Error();
     } catch(e) {
         DATA = genSample();
-        document.getElementById('footerText').textContent =
-            '⚠️ 샘플 데이터 표시 중 · 실제 데이터는 GitHub Actions 실행 후 업데이트됩니다';
+        document.getElementById('footerText').textContent = '샘플 데이터 표시 중 · 실제 데이터는 GitHub Actions 실행 후 업데이트됩니다';
     }
     render();
-    // Retry chart rendering if Chart.js wasn't loaded yet (defer)
     if (typeof Chart === 'undefined') {
-        const retryChart = setInterval(() => {
-            if (typeof Chart !== 'undefined') {
-                clearInterval(retryChart);
-                renderChart();
-            }
-        }, 200);
+        const retryChart = setInterval(() => { if (typeof Chart !== 'undefined') { clearInterval(retryChart); renderChart(); } }, 200);
         setTimeout(() => clearInterval(retryChart), 10000);
     }
 }
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    init();
-}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+else init();
 </script>
 </body>
 </html>
