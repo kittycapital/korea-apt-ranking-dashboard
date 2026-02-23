@@ -17,7 +17,7 @@ from collections import defaultdict
 import os, json, re
 
 # ── 설정 ──
-GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+
 DATA_DIR = 'data'
 CSV_DIR = os.path.join(DATA_DIR, 'csv')
 MIN_AREA = 59
@@ -598,8 +598,7 @@ def build_seoul_html(recent_seoul, alldata_seoul):
         json.dump(mavg, f, ensure_ascii=False, indent=2)
 
     # HTML 생성
-    gkey = GOOGLE_MAPS_API_KEY
-    html = gen_seoul_html(t20, rch, mavg, rd, ins, gkey, apt_months, apt_series)
+    html = gen_seoul_html(t20, rch, mavg, rd, ins, apt_months, apt_series)
     with open('seoul.html', 'w', encoding='utf-8') as f:
         f.write(html)
     print(f"  → seoul.html 생성 완료")
@@ -607,7 +606,7 @@ def build_seoul_html(recent_seoul, alldata_seoul):
         print(f"  {i}. {it['apt_name']} ({it['sido']} {it['sigungu']}) - {fp(it['price_per_pyeong'])}")
 
 
-def gen_seoul_html(t20, rch, mavg, rdist, ins, gkey, apt_months, apt_series):
+def gen_seoul_html(t20, rch, mavg, rdist, ins, apt_months, apt_series):
     ut = datetime.now().strftime('%Y.%m.%d %H:%M')
     cl = json.dumps(list(mavg.keys()))
     cv = json.dumps(list(mavg.values()))
@@ -681,7 +680,7 @@ def gen_seoul_html(t20, rch, mavg, rdist, ins, gkey, apt_months, apt_series):
                 <tr><th>층</th><td>{it['floor']}층</td></tr>
                 <tr><th>건축년도</th><td>{it['build_year']}년</td></tr>
             </table></div>
-            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key={gkey}&q={mq}&zoom=15"></iframe></div>
+            <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q={mq}&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>'''
 
     return f'''<!DOCTYPE html>
