@@ -135,9 +135,8 @@ table.main-table thead th:last-child{text-align:right}
 <div class="chart-header">
 <span class="chart-title">아파트별 평당가 추이</span>
 <div class="toggle-btns">
-<button class="toggle-btn" onclick="setRange(12)" id="btn-1y">1년</button>
-<button class="toggle-btn" onclick="setRange(24)" id="btn-2y">2년</button>
-<button class="toggle-btn active" onclick="setRange(36)" id="btn-3y">3년</button>
+<button class="toggle-btn" onclick="setRange(6)" id="btn-6m">6개월</button>
+<button class="toggle-btn active" onclick="setRange(12)" id="btn-1y">1년</button>
 </div>
 </div>
 <div class="chart-canvas-wrap">
@@ -147,14 +146,14 @@ table.main-table thead th:last-child{text-align:right}
 <div class="chart-hint">아래 리스트에서 아파트를 클릭하면 해당 추이가 강조됩니다</div>
 </div>
 
-<div class="trend-bar">순위 변동 데이터 수집 중...</div>
+<div class="trend-bar" id="trendBar">순위 변동 데이터 수집 중...</div>
 
 <!-- Table -->
 <table class="main-table">
 <thead><tr><th>순위</th><th></th><th>단지명</th><th>지역</th><th style="text-align:right;">평당가</th></tr></thead>
-<tbody>
-        <tr class="main-row" data-idx="0" onclick="handleRowClick(0)">
-            <td class="rank-cell">1</td><td class="change-cell"><span style="color:#888;">─</span></td>
+<tbody id="rankTableBody">
+        <tr class="main-row" data-idx="0" data-apt="래미안원베일리" data-city="서울시" data-gu="서초구" onclick="handleRowClick(0)">
+            <td class="rank-cell">1</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#00d4aa;"></span>래미안원베일리 <span class="arrow" id="arrow-1">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 6,363만</td>
         </tr>
@@ -169,8 +168,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=래미안원베일리+서울시+서초구+반포동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="1" onclick="handleRowClick(1)">
-            <td class="rank-cell">2</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="1" data-apt="아크로리버파크" data-city="서울시" data-gu="서초구" onclick="handleRowClick(1)">
+            <td class="rank-cell">2</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#4ecdc4;"></span>아크로리버파크 <span class="arrow" id="arrow-2">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 5,872만</td>
         </tr>
@@ -185,8 +184,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=아크로리버파크+서울시+서초구+반포동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="2" onclick="handleRowClick(2)">
-            <td class="rank-cell">3</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="2" data-apt="현대5차(71,72동)" data-city="서울시" data-gu="강남구" onclick="handleRowClick(2)">
+            <td class="rank-cell">3</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#ff6b6b;"></span>현대5차(71,72동) <span class="arrow" id="arrow-3">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 5,283만</td>
         </tr>
@@ -201,8 +200,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=현대5차(71,72동)+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="3" onclick="handleRowClick(3)">
-            <td class="rank-cell">4</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="3" data-apt="현대14차(203,204,205,206동)" data-city="서울시" data-gu="강남구" onclick="handleRowClick(3)">
+            <td class="rank-cell">4</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#45b7d1;"></span>현대14차(203,204,205,206동) <span class="arrow" id="arrow-4">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 4,853만</td>
         </tr>
@@ -217,8 +216,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=현대14차(203,204,205,206동)+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="4" onclick="handleRowClick(4)">
-            <td class="rank-cell">5</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="4" data-apt="아크로리버뷰신반포" data-city="서울시" data-gu="서초구" onclick="handleRowClick(4)">
+            <td class="rank-cell">5</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#96ceb4;"></span>아크로리버뷰신반포 <span class="arrow" id="arrow-5">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 4,382만</td>
         </tr>
@@ -233,8 +232,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=아크로리버뷰신반포+서울시+서초구+잠원동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="5" onclick="handleRowClick(5)">
-            <td class="rank-cell">6</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="5" data-apt="현대3차(61~64동)" data-city="서울시" data-gu="강남구" onclick="handleRowClick(5)">
+            <td class="rank-cell">6</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#ffeaa7;"></span>현대3차(61~64동) <span class="arrow" id="arrow-6">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 4,280만</td>
         </tr>
@@ -249,8 +248,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=현대3차(61~64동)+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="6" onclick="handleRowClick(6)">
-            <td class="rank-cell">7</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="6" data-apt="아크로서울포레스트" data-city="서울시" data-gu="성동구" onclick="handleRowClick(6)">
+            <td class="rank-cell">7</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#dfe6e9;"></span>아크로서울포레스트 <span class="arrow" id="arrow-7">▼</span></td>
             <td class="loc-cell">서울시 성동구</td><td class="price">2억 4,191만</td>
         </tr>
@@ -265,8 +264,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=아크로서울포레스트+서울시+성동구+성수동1가&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="7" onclick="handleRowClick(7)">
-            <td class="rank-cell">8</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="7" data-apt="신현대11차" data-city="서울시" data-gu="강남구" onclick="handleRowClick(7)">
+            <td class="rank-cell">8</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#a29bfe;"></span>신현대11차 <span class="arrow" id="arrow-8">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 3,030만</td>
         </tr>
@@ -281,8 +280,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=신현대11차+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="8" onclick="handleRowClick(8)">
-            <td class="rank-cell">9</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="8" data-apt="반포센트럴자이" data-city="서울시" data-gu="서초구" onclick="handleRowClick(8)">
+            <td class="rank-cell">9</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#fd79a8;"></span>반포센트럴자이 <span class="arrow" id="arrow-9">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 2,503만</td>
         </tr>
@@ -297,8 +296,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=반포센트럴자이+서울시+서초구+잠원동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="9" onclick="handleRowClick(9)">
-            <td class="rank-cell">10</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="9" data-apt="트리마제" data-city="서울시" data-gu="성동구" onclick="handleRowClick(9)">
+            <td class="rank-cell">10</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#e17055;"></span>트리마제 <span class="arrow" id="arrow-10">▼</span></td>
             <td class="loc-cell">서울시 성동구</td><td class="price">2억 2,487만</td>
         </tr>
@@ -313,8 +312,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=트리마제+서울시+성동구+성수동1가&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="10" onclick="handleRowClick(10)">
-            <td class="rank-cell">11</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="10" data-apt="래미안퍼스티지" data-city="서울시" data-gu="서초구" onclick="handleRowClick(10)">
+            <td class="rank-cell">11</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#00b894;"></span>래미안퍼스티지 <span class="arrow" id="arrow-11">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 2,455만</td>
         </tr>
@@ -329,8 +328,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=래미안퍼스티지+서울시+서초구+반포동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="11" onclick="handleRowClick(11)">
-            <td class="rank-cell">12</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="11" data-apt="미성2차" data-city="서울시" data-gu="강남구" onclick="handleRowClick(11)">
+            <td class="rank-cell">12</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#6c5ce7;"></span>미성2차 <span class="arrow" id="arrow-12">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 2,177만</td>
         </tr>
@@ -345,8 +344,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=미성2차+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="12" onclick="handleRowClick(12)">
-            <td class="rank-cell">13</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="12" data-apt="래미안원펜타스" data-city="서울시" data-gu="서초구" onclick="handleRowClick(12)">
+            <td class="rank-cell">13</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#fdcb6e;"></span>래미안원펜타스 <span class="arrow" id="arrow-13">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 1,767만</td>
         </tr>
@@ -361,8 +360,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=래미안원펜타스+서울시+서초구+반포동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="13" onclick="handleRowClick(13)">
-            <td class="rank-cell">14</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="13" data-apt="반포르엘" data-city="서울시" data-gu="서초구" onclick="handleRowClick(13)">
+            <td class="rank-cell">14</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#e84393;"></span>반포르엘 <span class="arrow" id="arrow-14">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 1,518만</td>
         </tr>
@@ -377,8 +376,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=반포르엘+서울시+서초구+잠원동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="14" onclick="handleRowClick(14)">
-            <td class="rank-cell">15</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="14" data-apt="한남더힐" data-city="서울시" data-gu="용산구" onclick="handleRowClick(14)">
+            <td class="rank-cell">15</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#636e72;"></span>한남더힐 <span class="arrow" id="arrow-15">▼</span></td>
             <td class="loc-cell">서울시 용산구</td><td class="price">2억 1,176만</td>
         </tr>
@@ -393,8 +392,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=한남더힐+서울시+용산구+한남동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="15" onclick="handleRowClick(15)">
-            <td class="rank-cell">16</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="15" data-apt="신현대9차" data-city="서울시" data-gu="강남구" onclick="handleRowClick(15)">
+            <td class="rank-cell">16</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#fab1a0;"></span>신현대9차 <span class="arrow" id="arrow-16">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 1,146만</td>
         </tr>
@@ -409,8 +408,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=신현대9차+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="16" onclick="handleRowClick(16)">
-            <td class="rank-cell">17</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="16" data-apt="디에이치반포라클라스" data-city="서울시" data-gu="서초구" onclick="handleRowClick(16)">
+            <td class="rank-cell">17</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#74b9ff;"></span>디에이치반포라클라스 <span class="arrow" id="arrow-17">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 629만</td>
         </tr>
@@ -425,8 +424,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=디에이치반포라클라스+서울시+서초구+반포동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="17" onclick="handleRowClick(17)">
-            <td class="rank-cell">18</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="17" data-apt="현대4차저층(51~56동)" data-city="서울시" data-gu="강남구" onclick="handleRowClick(17)">
+            <td class="rank-cell">18</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#55efc4;"></span>현대4차저층(51~56동) <span class="arrow" id="arrow-18">▼</span></td>
             <td class="loc-cell">서울시 강남구</td><td class="price">2억 431만</td>
         </tr>
@@ -441,8 +440,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=현대4차저층(51~56동)+서울시+강남구+압구정동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="18" onclick="handleRowClick(18)">
-            <td class="rank-cell">19</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="18" data-apt="반포자이" data-city="서울시" data-gu="서초구" onclick="handleRowClick(18)">
+            <td class="rank-cell">19</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#b2bec3;"></span>반포자이 <span class="arrow" id="arrow-19">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 202만</td>
         </tr>
@@ -457,8 +456,8 @@ table.main-table thead th:last-child{text-align:right}
             </table></div>
             <div class="detail-map"><iframe width="300" height="200" style="border:0;border-radius:8px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=반포자이+서울시+서초구+반포동&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe></div>
         </div></td></tr>
-        <tr class="main-row" data-idx="19" onclick="handleRowClick(19)">
-            <td class="rank-cell">20</td><td class="change-cell"><span style="color:#888;">─</span></td>
+        <tr class="main-row" data-idx="19" data-apt="신반포2" data-city="서울시" data-gu="서초구" onclick="handleRowClick(19)">
+            <td class="rank-cell">20</td><td class="change-cell"></td>
             <td class="apt-name"><span class="color-dot" style="background:#ff7675;"></span>신반포2 <span class="arrow" id="arrow-20">▼</span></td>
             <td class="loc-cell">서울시 서초구</td><td class="price">2억 113만</td>
         </tr>
@@ -584,6 +583,65 @@ function showToast(msg) {
 }
 try { if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) Kakao.init('a43ed7b39fac35458f4f9df925a279b5'); } catch(e) {}
 
+/* ── 순위 변동 계산 ── */
+const previousRank = {"래미안원베일리|서울시|서초구":1,"아크로리버파크|서울시|서초구":2,"현대5차(71,72동)|서울시|강남구":3,"현대14차(203,204,205,206동)|서울시|강남구":4,"아크로리버뷰신반포|서울시|서초구":5,"현대3차(61~64동)|서울시|강남구":6,"아크로서울포레스트|서울시|성동구":7,"신현대11차|서울시|강남구":8,"반포센트럴자이|서울시|서초구":9,"트리마제|서울시|성동구":10,"래미안퍼스티지|서울시|서초구":11,"미성2차|서울시|강남구":12,"래미안원펜타스|서울시|서초구":13,"반포르엘|서울시|서초구":14,"한남더힐|서울시|용산구":15,"신현대9차|서울시|강남구":16,"디에이치반포라클라스|서울시|서초구":17,"현대4차저층(51~56동)|서울시|강남구":18,"반포자이|서울시|서초구":19,"신반포2|서울시|서초구":20};
+
+function applyRankChanges() {
+    var rows = document.querySelectorAll('.main-row');
+    var upCount = 0, downCount = 0, newCount = 0, sameCount = 0;
+    var changes = [];
+
+    rows.forEach(function(row) {
+        var apt = row.getAttribute('data-apt');
+        var city = row.getAttribute('data-city');
+        var gu = row.getAttribute('data-gu');
+        var currentRank = parseInt(row.querySelector('.rank-cell').textContent);
+        var key = apt + '|' + city + '|' + gu;
+        var cell = row.querySelector('.change-cell');
+
+        if (previousRank.hasOwnProperty(key)) {
+            var prevRank = previousRank[key];
+            var diff = prevRank - currentRank; // positive = went up
+
+            if (diff > 0) {
+                cell.innerHTML = '<span style="color:#00d4aa;">▲ ' + diff + '</span>';
+                upCount++;
+                changes.push(apt + ' ▲' + diff);
+            } else if (diff < 0) {
+                cell.innerHTML = '<span style="color:#ff4757;">▼ ' + Math.abs(diff) + '</span>';
+                downCount++;
+                changes.push(apt + ' ▼' + Math.abs(diff));
+            } else {
+                cell.innerHTML = '<span style="color:#888;">─</span>';
+                sameCount++;
+            }
+        } else {
+            cell.innerHTML = '<span style="color:#fdcb6e;">NEW</span>';
+            newCount++;
+            changes.push(apt + ' NEW');
+        }
+    });
+
+    // Update trend bar
+    var trendBar = document.getElementById('trendBar');
+    if (upCount === 0 && downCount === 0 && newCount === 0) {
+        trendBar.textContent = '전회 대비 순위 변동 없음 · TOP 20 동일';
+    } else {
+        var parts = [];
+        if (upCount > 0) parts.push('상승 ' + upCount + '개');
+        if (downCount > 0) parts.push('하락 ' + downCount + '개');
+        if (newCount > 0) parts.push('신규 진입 ' + newCount + '개');
+        if (sameCount > 0) parts.push('유지 ' + sameCount + '개');
+        trendBar.innerHTML = '전회 대비 · ' + parts.join(' / ');
+        if (changes.length > 0) {
+            trendBar.innerHTML += '<span style="margin-left:12px;color:#666;">(' + changes.join(', ') + ')</span>';
+        }
+    }
+}
+
+// Run on page load
+applyRankChanges();
+
 /* ── Chart data ── */
 const aptLabels = ["2025.02", "2025.03", "2025.04", "2025.05", "2025.06", "2025.07", "2025.08", "2025.09", "2025.10", "2025.11", "2025.12", "2026.01", "2026.02"];
 const aptDatasets = [{label:'래미안원베일리',data:[22892,22785,null,null,24198,24450,25910,null,24096,25078,null,null,23782],borderColor:'#00d4aa',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'아크로리버파크',data:[20406,19517,null,20709,20119,19732,null,21499,null,24767,null,null,null],borderColor:'#4ecdc4',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'현대5차(71,72동)',data:[19865,20467,20868,25283,null,null,null,24681,null,null,null,null,null],borderColor:'#ff6b6b',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'현대14차(203,204,205,206동)',data:[19416,20202,null,null,22140,24658,24476,null,null,24659,null,null,null],borderColor:'#45b7d1',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'아크로리버뷰신반포',data:[null,18413,null,17228,18090,null,null,null,null,null,null,null,22703],borderColor:'#96ceb4',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'현대3차(61~64동)',data:[17600,18800,21200,20000,21900,21200,null,24000,null,24280,null,null,null],borderColor:'#ffeaa7',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'아크로서울포레스트',data:[null,null,null,31132,34936,17521,16048,24191,null,null,null,null,null],borderColor:'#dfe6e9',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'신현대11차',data:[null,16132,17674,19172,19207,19250,16193,18480,19162,null,20822,null,null],borderColor:'#a29bfe',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'반포센트럴자이',data:[16006,17176,null,16673,19400,19360,null,18335,19345,17419,22503,null,null],borderColor:'#fd79a8',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'트리마제',data:[15312,13845,14814,14691,16406,null,16407,15290,19726,null,20688,18511,null],borderColor:'#e17055',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'래미안퍼스티지',data:[15956,15688,17485,17485,17605,16408,null,14825,null,19708,17435,16242,22342],borderColor:'#00b894',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'미성2차',data:[15857,15352,18576,17338,19692,22177,18034,null,18909,22177,null,null,null],borderColor:'#6c5ce7',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'래미안원펜타스',data:[null,18288,null,null,null,null,null,null,null,21767,null,null,null],borderColor:'#fdcb6e',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'반포르엘',data:[15990,16705,null,null,18100,null,null,null,20154,null,null,null,null],borderColor:'#e84393',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'한남더힐',data:[null,20524,null,null,19904,null,null,21176,null,19546,null,null,null],borderColor:'#636e72',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'신현대9차',data:[16011,16640,18791,17777,19549,21438,null,null,20768,null,18420,21146,null],borderColor:'#fab1a0',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'디에이치반포라클라스',data:[13604,15501,null,16028,17686,15085,15939,20077,null,20216,14943,null,null],borderColor:'#74b9ff',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'현대4차저층(51~56동)',data:[null,null,20991,null,null,null,null,null,null,null,20431,null,null],borderColor:'#55efc4',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'반포자이',data:[15083,14164,null,16210,14966,17809,12385,17096,15148,11886,19464,19632,null],borderColor:'#b2bec3',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true},{label:'신반포2',data:[14590,14707,16364,16460,16524,17480,18413,18778,17962,18190,16176,17577,20113],borderColor:'#ff7675',backgroundColor:'transparent',tension:0.3,pointRadius:0,pointHoverRadius:4,borderWidth:1.5,spanGaps:true}];
@@ -595,9 +653,11 @@ const datasets = aptDatasets.map(function(d, i) {
     return Object.assign({}, d, { borderColor: COLORS[i], _origColor: COLORS[i] });
 });
 
+/* Default: 1년 = last 12 months */
+const defaultRange = 12;
 const tc = new Chart(ctx, {
     type: 'line',
-    data: { labels: aptLabels, datasets: datasets },
+    data: { labels: aptLabels.slice(-defaultRange), datasets: datasets.map(function(ds, i) { var c = Object.assign({}, ds); c.data = aptDatasets[i].data.slice(-defaultRange); return c; }) },
     options: {
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
@@ -625,7 +685,7 @@ const tc = new Chart(ctx, {
 
 function setRange(m) {
     document.querySelectorAll('.toggle-btn').forEach(function(b) { b.classList.remove('active'); });
-    document.getElementById(m===12?'btn-1y':m===24?'btn-2y':'btn-3y').classList.add('active');
+    document.getElementById(m===6?'btn-6m':'btn-1y').classList.add('active');
     tc.data.labels = aptLabels.slice(-m);
     tc.data.datasets.forEach(function(ds, i) { ds.data = aptDatasets[i].data.slice(-m); });
     tc.update();
