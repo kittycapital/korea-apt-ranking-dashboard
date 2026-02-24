@@ -160,9 +160,9 @@ table.main-table thead th:last-child{text-align:right}
 <div class="chart-header">
 <span class="chart-title" id="chartTitle">평당가 추이</span>
 <div class="toggle-btns">
-<button class="toggle-btn" onclick="setRange(12)" id="btn-1y">1년</button>
-<button class="toggle-btn" onclick="setRange(24)" id="btn-2y">2년</button>
-<button class="toggle-btn active" onclick="setRange(36)" id="btn-3y">3년</button>
+<button class="toggle-btn" onclick="setRange(6)" id="btn-6m">6개월</button>
+<button class="toggle-btn active" onclick="setRange(12)" id="btn-1y">1년</button>
+<button class="toggle-btn" onclick="setRange(0)" id="btn-all">전체</button>
 </div>
 </div>
 <div class="chart-canvas-wrap">
@@ -239,19 +239,15 @@ function showCopied(btn) {
     }, 2000);
 }
 function doCopy(text) {
-    // 방법1: Clipboard API (top-level + secure context)
     try {
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).catch(function(){
-                fallbackCopy(text);
-            });
+            navigator.clipboard.writeText(text).catch(function(){ fallbackCopy(text); });
             return;
         }
     } catch(e) {}
     fallbackCopy(text);
 }
 function fallbackCopy(text) {
-    // 방법2: execCommand
     var ta = document.createElement('textarea');
     ta.value = text;
     ta.setAttribute('readonly', '');
@@ -321,7 +317,7 @@ let currentSido = "서울시";
 let currentDistrict = "강남구";
 let chart = null;
 let activeIdx = -1;
-let currentRange = 36;
+let currentRange = 12;
 let currentLabels = [];
 let currentSeries = [];
 
@@ -407,9 +403,10 @@ function renderChart() {
         return;
     }
     try {
-    const labels = currentLabels.slice(-currentRange);
+    const sliceCount = currentRange === 0 ? currentLabels.length : currentRange;
+    const labels = currentLabels.slice(-sliceCount);
     const datasets = currentSeries.map((vals, i) => {
-        const sliced = vals.slice(-currentRange);
+        const sliced = vals.slice(-sliceCount);
         return {
             label: getAptName(i), data: sliced, borderColor: COLORS[i],
             backgroundColor: 'transparent', borderWidth: 1.5, pointRadius: 0,
@@ -450,7 +447,9 @@ function getAptName(i) {
 function setRange(m) {
     currentRange = m;
     document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(m===12?'btn-1y':m===24?'btn-2y':'btn-3y').classList.add('active');
+    if (m === 6) document.getElementById('btn-6m').classList.add('active');
+    else if (m === 12) document.getElementById('btn-1y').classList.add('active');
+    else document.getElementById('btn-all').classList.add('active');
     renderChart();
 }
 
