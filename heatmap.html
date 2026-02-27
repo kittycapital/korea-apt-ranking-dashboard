@@ -37,7 +37,7 @@ body{font-family:'Noto Sans KR',system-ui,sans-serif;background:var(--bg0);color
 /* Heatmap table */
 .heatmap-section{margin-bottom:16px}
 .sido-group{margin-bottom:12px}
-.sido-label{font-size:13px;font-weight:700;color:var(--t3);padding:6px 10px;border-bottom:1px solid var(--bdr);margin-bottom:0}
+.sido-label{font-size:14px;font-weight:700;color:var(--t1);padding:10px 10px;border-bottom:1px solid var(--bdr);margin-bottom:0}
 .hm-table{width:100%;border-collapse:collapse}
 .hm-table th{padding:8px 10px;text-align:center;font-size:11px;font-weight:500;color:var(--t4);border-bottom:1px solid var(--bdr);font-family:'JetBrains Mono',monospace;cursor:pointer;user-select:none;white-space:nowrap}
 .hm-table th:first-child{text-align:left;cursor:default;width:140px}
@@ -256,7 +256,7 @@ function render(){
         if(!rows||!rows.length)return;
 
         html+='<div class="sido-group">';
-        html+='<div class="sido-label">'+(SIDO_SHORT[sido]||sido)+' <span style="color:var(--t4);font-weight:400;font-size:11px">('+rows.length+'개 지역)</span></div>';
+        html+='<div class="sido-label">'+(SIDO_SHORT[sido]||sido)+' <span style="color:var(--t3);font-weight:400;font-size:12px">('+rows.length+'개 지역)</span></div>';
         html+='<table class="hm-table"><thead><tr>';
         html+='<th>지역</th>';
         html+='<th class="'+(currentSort==='1m'?'sorted':'')+'" onclick="setSort(\'1m\')">1M<span class="arrow">▼</span></th>';
