@@ -157,7 +157,7 @@ table.main-table thead th:last-child{text-align:right}
 
 <!-- Dropdown -->
 <div class="dropdown-area">
-<div class="dropdown-label">지역 선택</div>
+<div class="dropdown-label" id="dropdownLabel">지역 선택</div>
 <select class="dropdown-select" id="districtSelect" onchange="onDistrictChange()"></select>
 </div>
 
@@ -322,18 +322,62 @@ const REGION_MAP = {
 };
 const METRO = ["서울시","인천시","부산시","대구시","광주시","대전시","울산시","세종시"];
 const PROV = ["경기도","강원도","충북","충남","전북","전남","경북","경남","제주도"];
+const PROV_SET = new Set(PROV);
 const TAB_LABELS = {"서울시":"서울","인천시":"인천","부산시":"부산","대구시":"대구","광주시":"광주","대전시":"대전","울산시":"울산","세종시":"세종","경기도":"경기","강원도":"강원","충북":"충북","충남":"충남","전북":"전북","전남":"전남","경북":"경북","경남":"경남","제주도":"제주"};
 const COLORS = ["#00d4aa","#4ecdc4","#ff6b6b","#45b7d1","#96ceb4","#ffeaa7","#a29bfe","#fd79a8","#e17055","#74b9ff"];
+
+// 도 내 시 목록 생성 (하위 구가 2개 이상인 시만)
+function buildCityMap() {
+    const map = {};
+    PROV.forEach(sido => {
+        const districts = REGION_MAP[sido] || [];
+        const cityDistricts = {};
+        districts.forEach(d => {
+            const parts = d.split(' ');
+            if (parts.length >= 2) {
+                const city = parts[0];
+                if (!cityDistricts[city]) cityDistricts[city] = [];
+                cityDistricts[city].push(d);
+            }
+        });
+        // 하위 구가 2개 이상인 시만 포함
+        const cities = Object.keys(cityDistricts).filter(c => cityDistricts[c].length >= 2).sort();
+        if (cities.length > 0) map[sido] = cities;
+    });
+    return map;
+}
+const CITY_MAP = buildCityMap();
 
 let DATA = null;
 let currentSido = "서울시";
 let currentDistrict = "강남구";
+let currentCity = "";
 let viewMode = "district"; // "district" or "city"
 let chart = null;
 let activeIdx = -1;
 let currentRange = 12;
 let currentLabels = [];
 let currentSeries = [];
+
+function getDataKey() {
+    if (viewMode === 'city') {
+        if (PROV_SET.has(currentSido) && currentCity && currentCity !== '_all_') {
+            return currentSido + '|_city_' + currentCity;
+        }
+        return currentSido + '|_city_';
+    }
+    return currentSido + '|' + currentDistrict;
+}
+
+function getViewLabel() {
+    if (viewMode === 'city') {
+        if (PROV_SET.has(currentSido) && currentCity && currentCity !== '_all_') {
+            return currentCity;
+        }
+        return TAB_LABELS[currentSido] + ' 전체';
+    }
+    return currentDistrict;
+}
 
 function buildTabs() {
     const m = document.getElementById('metroTabs');
@@ -360,7 +404,11 @@ function selectSido(sido) {
     document.querySelectorAll('.tab').forEach(t => {
         if (TAB_LABELS[sido] === t.textContent) t.classList.add('active');
     });
-    populateDropdown();
+    if (viewMode === 'city') {
+        updateDropdownForCityMode();
+    } else {
+        populateDropdown();
+    }
     onDistrictChange();
 }
 
@@ -369,11 +417,49 @@ function setViewMode(mode) {
     document.getElementById('viewDistrict').classList.toggle('active', mode === 'district');
     document.getElementById('viewCity').classList.toggle('active', mode === 'city');
     document.getElementById('mainTitle').textContent = mode === 'city' ? '전국 시별 아파트 평당가 TOP 10' : '전국 구별 아파트 평당가 TOP 10';
-    const dd = document.querySelector('.dropdown-area');
-    if (mode === 'city') dd.classList.add('hidden');
-    else dd.classList.remove('hidden');
+    if (mode === 'city') {
+        updateDropdownForCityMode();
+    } else {
+        const dd = document.querySelector('.dropdown-area');
+        dd.classList.remove('hidden');
+        document.getElementById('dropdownLabel').textContent = '지역 선택';
+        populateDropdown();
+    }
     activeIdx = -1;
     render();
+}
+
+function updateDropdownForCityMode() {
+    const dd = document.querySelector('.dropdown-area');
+    if (PROV_SET.has(currentSido) && CITY_MAP[currentSido]) {
+        dd.classList.remove('hidden');
+        document.getElementById('dropdownLabel').textContent = '시 선택';
+        populateCityDropdown();
+    } else {
+        dd.classList.add('hidden');
+    }
+}
+
+function populateCityDropdown() {
+    const sel = document.getElementById('districtSelect');
+    sel.innerHTML = '';
+    const cities = CITY_MAP[currentSido] || [];
+    // "전체" 옵션
+    const optAll = document.createElement('option');
+    optAll.value = '_all_'; optAll.textContent = TAB_LABELS[currentSido] + ' 전체';
+    sel.appendChild(optAll);
+    // 개별 시
+    cities.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c; opt.textContent = c;
+        sel.appendChild(opt);
+    });
+    if (currentCity && (currentCity === '_all_' || cities.includes(currentCity))) {
+        sel.value = currentCity;
+    } else {
+        currentCity = '_all_';
+        sel.value = '_all_';
+    }
 }
 
 function populateDropdown() {
@@ -391,7 +477,11 @@ function populateDropdown() {
 
 function onDistrictChange() {
     const sel = document.getElementById('districtSelect');
-    currentDistrict = sel.value;
+    if (viewMode === 'city') {
+        currentCity = sel.value;
+    } else {
+        currentDistrict = sel.value;
+    }
     activeIdx = -1;
     render();
 }
@@ -403,9 +493,8 @@ function fp(p) {
 }
 
 function render() {
-    const isCity = viewMode === 'city';
-    const key = isCity ? currentSido + '|_city_' : currentSido + '|' + currentDistrict;
-    const label = isCity ? TAB_LABELS[currentSido] + ' 전체' : currentDistrict;
+    const key = getDataKey();
+    const label = getViewLabel();
     const d = DATA ? DATA.data[key] : null;
     document.getElementById('cardLabel1').textContent = label + ' TOP 10 평균';
     if (d) {
@@ -467,8 +556,7 @@ function renderChart() {
 }
 
 function getAptName(i) {
-    const isCity = viewMode === 'city';
-    const key = isCity ? currentSido + '|_city_' : currentSido + '|' + currentDistrict;
+    const key = getDataKey();
     const d = DATA ? DATA.data[key] : null;
     return d && d.top10[i] ? d.top10[i].name : '';
 }
@@ -493,7 +581,13 @@ function renderTable(d) {
     let html = '';
     d.top10.forEach((apt, i) => {
         const c = COLORS[i];
-        const mapQuery = isCity ? apt.name + ' ' + currentSido + ' ' + apt.dong : apt.name + ' ' + currentSido + ' ' + currentDistrict + ' ' + apt.dong;
+        let mapQuery;
+        if (isCity) {
+            const cityLabel = (PROV_SET.has(currentSido) && currentCity && currentCity !== '_all_') ? currentCity : '';
+            mapQuery = apt.name + ' ' + currentSido + ' ' + cityLabel + ' ' + apt.dong;
+        } else {
+            mapQuery = apt.name + ' ' + currentSido + ' ' + currentDistrict + ' ' + apt.dong;
+        }
         html += `<tr class="main-row" data-idx="${i}" onclick="handleRowClick(${i})">
             <td class="rank-cell">${i+1}</td>
             <td class="apt-name"><span class="color-dot" style="background:${c}"></span>${apt.name} <span class="arrow" id="arrow-${i}">▼</span></td>
@@ -602,6 +696,31 @@ function genSample() {
         {name:"은마아파트",dong:"강남구 대치동",area_m2:84.43,area_pyeong:25.6,price:492000,ppyeong:19200,date:"2025.12.12",floor:"8",build_year:"1979"},
         {name:"반포래미안아이파크",dong:"서초구 반포동",area_m2:59.96,area_pyeong:18.2,price:355000,ppyeong:19500,date:"2025.10.28",floor:"12",build_year:"2018"}
     ], series: Array.from({length:10},(_,i)=>line(33000-i*1500, (i+5)*113))};
+    // 경기도 전체 + 안양시 샘플
+    sample["경기도|_city_"] = { avg:9200, deals:53000, top10:[
+        {name:"과천푸르지오써밋",dong:"과천시 중앙동",area_m2:84.98,area_pyeong:25.7,price:242000,ppyeong:9420,date:"2025.12.01",floor:"20",build_year:"2021"},
+        {name:"과천자이",dong:"과천시 별양동",area_m2:84.97,area_pyeong:25.7,price:218000,ppyeong:8480,date:"2025.11.15",floor:"15",build_year:"2020"},
+        {name:"과천위버필드",dong:"과천시 갈현동",area_m2:84.99,area_pyeong:25.8,price:180000,ppyeong:6970,date:"2025.10.20",floor:"10",build_year:"2019"},
+        {name:"판교푸르지오그랑블",dong:"성남시 분당구 백현동",area_m2:84.98,area_pyeong:25.7,price:170000,ppyeong:6600,date:"2025.11.05",floor:"18",build_year:"2017"},
+        {name:"주공8",dong:"과천시 부림동",area_m2:84.97,area_pyeong:25.7,price:158000,ppyeong:6140,date:"2025.12.10",floor:"8",build_year:"1988"},
+        {name:"센트럴파크푸르지오써밋",dong:"과천시 부림동",area_m2:84.98,area_pyeong:25.7,price:155000,ppyeong:6030,date:"2025.10.15",floor:"12",build_year:"2020"},
+        {name:"롯데캐슬6단지(주공)",dong:"성남시 분당구 삼평동",area_m2:84.99,area_pyeong:25.8,price:148000,ppyeong:5740,date:"2025.11.20",floor:"7",build_year:"2010"},
+        {name:"래미안센트럴스위트",dong:"과천시 별양동",area_m2:84.97,area_pyeong:25.7,price:140000,ppyeong:5450,date:"2025.12.05",floor:"9",build_year:"2015"},
+        {name:"백현마을6단지(주공)",dong:"성남시 분당구 백현동",area_m2:84.98,area_pyeong:25.7,price:135000,ppyeong:5250,date:"2025.10.25",floor:"14",build_year:"2009"},
+        {name:"래미안슈르",dong:"과천시 갈현동",area_m2:84.99,area_pyeong:25.8,price:130000,ppyeong:5040,date:"2025.11.10",floor:"6",build_year:"2018"}
+    ], series: Array.from({length:10},(_,i)=>line(9200-i*450, (i+7)*89))};
+    sample["경기도|_city_안양시"] = { avg:4200, deals:3200, top10:[
+        {name:"평촌자이아이파크",dong:"동안구 비산동",area_m2:84.98,area_pyeong:25.7,price:138000,ppyeong:5370,date:"2025.12.01",floor:"18",build_year:"2022"},
+        {name:"래미안안양메가트리아",dong:"동안구 관양동",area_m2:84.97,area_pyeong:25.7,price:120000,ppyeong:4670,date:"2025.11.20",floor:"15",build_year:"2021"},
+        {name:"평촌더샵센트럴시티",dong:"동안구 호계동",area_m2:84.99,area_pyeong:25.8,price:112000,ppyeong:4340,date:"2025.10.15",floor:"12",build_year:"2020"},
+        {name:"인덕원자이SK뷰",dong:"동안구 관양동",area_m2:84.98,area_pyeong:25.7,price:105000,ppyeong:4090,date:"2025.11.05",floor:"10",build_year:"2019"},
+        {name:"귀인마을래미안",dong:"동안구 평촌동",area_m2:84.97,area_pyeong:25.7,price:98000,ppyeong:3810,date:"2025.12.10",floor:"8",build_year:"2007"},
+        {name:"평촌래미안푸르지오",dong:"동안구 비산동",area_m2:84.98,area_pyeong:25.7,price:95000,ppyeong:3700,date:"2025.10.22",floor:"14",build_year:"2012"},
+        {name:"향촌한가람",dong:"동안구 평촌동",area_m2:84.99,area_pyeong:25.8,price:90000,ppyeong:3490,date:"2025.11.15",floor:"7",build_year:"1993"},
+        {name:"초원한양",dong:"동안구 평촌동",area_m2:84.97,area_pyeong:25.7,price:88000,ppyeong:3420,date:"2025.12.05",floor:"11",build_year:"1992"},
+        {name:"안양역푸르지오",dong:"만안구 안양동",area_m2:84.98,area_pyeong:25.7,price:82000,ppyeong:3190,date:"2025.10.28",floor:"9",build_year:"2017"},
+        {name:"덕현e편한세상",dong:"만안구 석수동",area_m2:84.99,area_pyeong:25.8,price:78000,ppyeong:3020,date:"2025.11.25",floor:"6",build_year:"2015"}
+    ], series: Array.from({length:10},(_,i)=>line(5300-i*250, (i+2)*67))};
     return { updated:"샘플 데이터", labels, data:sample };
 }
 
