@@ -32,22 +32,6 @@
     "region_code": "11650"
   },
   {
-    "apt_name": "현대5차(71,72동)",
-    "sido": "서울시",
-    "sigungu": "강남구",
-    "dong": "압구정동",
-    "area_m2": 82.23,
-    "area_pyeong": 24.9,
-    "price": 630000,
-    "price_per_pyeong": 25283,
-    "deal_year": "2025",
-    "deal_month": "09",
-    "deal_day": "24",
-    "floor": "11",
-    "build_year": "1977",
-    "region_code": "11680"
-  },
-  {
     "apt_name": "현대14차(203,204,205,206동)",
     "sido": "서울시",
     "sigungu": "강남구",
@@ -64,22 +48,6 @@
     "region_code": "11680"
   },
   {
-    "apt_name": "아크로리버뷰신반포",
-    "sido": "서울시",
-    "sigungu": "서초구",
-    "dong": "잠원동",
-    "area_m2": 78.5,
-    "area_pyeong": 23.8,
-    "price": 580000,
-    "price_per_pyeong": 24382,
-    "deal_year": "2026",
-    "deal_month": "02",
-    "deal_day": "10",
-    "floor": "27",
-    "build_year": "2018",
-    "region_code": "11650"
-  },
-  {
     "apt_name": "현대3차(61~64동)",
     "sido": "서울시",
     "sigungu": "강남구",
@@ -94,22 +62,6 @@
     "floor": "12",
     "build_year": "1976",
     "region_code": "11680"
-  },
-  {
-    "apt_name": "아크로서울포레스트",
-    "sido": "서울시",
-    "sigungu": "성동구",
-    "dong": "성수동1가",
-    "area_m2": 159.603,
-    "area_pyeong": 48.4,
-    "price": 1170000,
-    "price_per_pyeong": 24191,
-    "deal_year": "2025",
-    "deal_month": "09",
-    "deal_day": "08",
-    "floor": "8",
-    "build_year": "2020",
-    "region_code": "11200"
   },
   {
     "apt_name": "신현대11차",
@@ -224,22 +176,6 @@
     "region_code": "11650"
   },
   {
-    "apt_name": "한남더힐",
-    "sido": "서울시",
-    "sigungu": "용산구",
-    "dong": "한남동",
-    "area_m2": 59.686,
-    "area_pyeong": 18.1,
-    "price": 383000,
-    "price_per_pyeong": 21176,
-    "deal_year": "2025",
-    "deal_month": "09",
-    "deal_day": "19",
-    "floor": "2",
-    "build_year": "2011",
-    "region_code": "11170"
-  },
-  {
     "apt_name": "신현대9차",
     "sido": "서울시",
     "sigungu": "강남구",
@@ -254,6 +190,22 @@
     "floor": "10",
     "build_year": "1982",
     "region_code": "11680"
+  },
+  {
+    "apt_name": "한남더힐",
+    "sido": "서울시",
+    "sigungu": "용산구",
+    "dong": "한남동",
+    "area_m2": 59.686,
+    "area_pyeong": 18.1,
+    "price": 380000,
+    "price_per_pyeong": 21010,
+    "deal_year": "2025",
+    "deal_month": "11",
+    "deal_day": "17",
+    "floor": "2",
+    "build_year": "2011",
+    "region_code": "11170"
   },
   {
     "apt_name": "디에이치반포라클라스",
@@ -304,19 +256,67 @@
     "region_code": "11650"
   },
   {
+    "apt_name": "반포리체",
+    "sido": "서울시",
+    "sigungu": "서초구",
+    "dong": "반포동",
+    "area_m2": 59.994,
+    "area_pyeong": 18.2,
+    "price": 365000,
+    "price_per_pyeong": 20077,
+    "deal_year": "2025",
+    "deal_month": "11",
+    "deal_day": "03",
+    "floor": "27",
+    "build_year": "2010",
+    "region_code": "11650"
+  },
+  {
+    "apt_name": "신현대12차",
+    "sido": "서울시",
+    "sigungu": "강남구",
+    "dong": "압구정동",
+    "area_m2": 121.18,
+    "area_pyeong": 36.7,
+    "price": 730000,
+    "price_per_pyeong": 19880,
+    "deal_year": "2025",
+    "deal_month": "10",
+    "deal_day": "16",
+    "floor": "12",
+    "build_year": "1982",
+    "region_code": "11680"
+  },
+  {
     "apt_name": "신반포2",
     "sido": "서울시",
     "sigungu": "서초구",
     "dong": "잠원동",
     "area_m2": 68.91,
     "area_pyeong": 20.9,
-    "price": 420000,
-    "price_per_pyeong": 20113,
-    "deal_year": "2026",
-    "deal_month": "02",
-    "deal_day": "06",
-    "floor": "10",
+    "price": 410000,
+    "price_per_pyeong": 19634,
+    "deal_year": "2025",
+    "deal_month": "10",
+    "deal_day": "02",
+    "floor": "5",
     "build_year": "1978",
+    "region_code": "11650"
+  },
+  {
+    "apt_name": "서초그랑자이",
+    "sido": "서울시",
+    "sigungu": "서초구",
+    "dong": "서초동",
+    "area_m2": 59.98,
+    "area_pyeong": 18.2,
+    "price": 355000,
+    "price_per_pyeong": 19532,
+    "deal_year": "2026",
+    "deal_month": "01",
+    "deal_day": "26",
+    "floor": "34",
+    "build_year": "2021",
     "region_code": "11650"
   }
 ]
