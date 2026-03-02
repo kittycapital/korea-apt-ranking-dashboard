@@ -704,13 +704,20 @@ function shareKakao(){
 }
 
 function shareInstagram(){
-  try{navigator.clipboard.writeText(SHARE_URL+'\n'+SHARE_TITLE).then(function(){toast('링크가 복사되었습니다. 인스타그램 스토리에 붙여넣기 하세요!')}).catch(function(){toast('인스타그램 앱에서 공유해주세요')})}catch(e){toast('인스타그램 앱에서 공유해주세요')}
+  var txt=SHARE_URL+'\n'+SHARE_TITLE;
+  try{
+    if(window.parent!==window){window.parent.postMessage({type:'clipboard',text:txt},'*');toast('링크가 복사되었습니다. 인스타그램 스토리에 붙여넣기 하세요!');return}
+    navigator.clipboard.writeText(txt).then(function(){toast('링크가 복사되었습니다. 인스타그램 스토리에 붙여넣기 하세요!')}).catch(function(){fallbackCopy(txt,'인스타그램 스토리에 붙여넣기 하세요!')})
+  }catch(e){fallbackCopy(txt,'인스타그램 스토리에 붙여넣기 하세요!')}
 }
 
 function copyLink(){
-  try{navigator.clipboard.writeText(SHARE_URL).then(function(){toast('링크가 복사되었습니다!')}).catch(function(){fallbackCopy()})}catch(e){fallbackCopy()}
+  try{
+    if(window.parent!==window){window.parent.postMessage({type:'clipboard',text:SHARE_URL},'*');toast('링크가 복사되었습니다!');return}
+    navigator.clipboard.writeText(SHARE_URL).then(function(){toast('링크가 복사되었습니다!')}).catch(function(){fallbackCopy(SHARE_URL)})
+  }catch(e){fallbackCopy(SHARE_URL)}
 }
-function fallbackCopy(){var ta=document.createElement('textarea');ta.value=SHARE_URL;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('링크가 복사되었습니다!')}catch(e){toast('복사 실패: '+SHARE_URL)}document.body.removeChild(ta)}
+function fallbackCopy(txt,msg){var ta=document.createElement('textarea');ta.value=txt||SHARE_URL;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast(msg||'링크가 복사되었습니다!')}catch(e){toast('복사 실패')}document.body.removeChild(ta)}
 </script>
 </body>
 </html>
