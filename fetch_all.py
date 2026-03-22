@@ -1117,6 +1117,9 @@ def main():
     # ── 최근 6개월 데이터 분리 ──
     months_6 = get_months(6)
     months_6_set = set(months_6)
+
+    print(f"  📅 최근 6개월 범위: {sorted(months_6_set)}")
+
     recent = [
         it for it in alldata
         if f"{it['deal_year']}{it['deal_month'].zfill(2)}" in months_6_set
@@ -1129,6 +1132,30 @@ def main():
     print(f"  전체: {len(alldata)}건")
     print(f"  최근 6개월: {len(recent)}건")
     print(f"  서울 전체: {len(alldata_seoul)}건 / 최근 6개월: {len(recent_seoul)}건\n")
+
+    # ── 디버그: 래미안원베일리 거래 확인 ──
+    print("  🔍 [디버그] 래미안원베일리 전체 데이터 (최근 6개월):")
+    rw_all = [it for it in recent if '래미안원베일리' in it['apt_name']]
+    rw_all.sort(key=lambda x: x['price_per_pyeong'], reverse=True)
+    for it in rw_all:
+        ym = f"{it['deal_year']}.{it['deal_month'].zfill(2)}.{it['deal_day'].zfill(2)}"
+        print(f"    {ym} | {it['area_m2']}㎡ ({it['area_pyeong']}평) | "
+              f"거래금액 {it['price']:,}만 | 평당가 {it['price_per_pyeong']:,}만 | "
+              f"{it['floor']}층 | {it['sigungu']} {it['dong']}")
+    if not rw_all:
+        print("    ⚠️ 최근 6개월 데이터 없음!")
+    print()
+    print("  🔍 [디버그] 래미안원베일리 alldata 내 2026.02 거래:")
+    rw_feb = [it for it in alldata if '래미안원베일리' in it['apt_name']
+              and it['deal_year'] == '2026' and it['deal_month'] == '02']
+    for it in rw_feb:
+        ym = f"{it['deal_year']}.{it['deal_month'].zfill(2)}.{it['deal_day'].zfill(2)}"
+        print(f"    {ym} | {it['area_m2']}㎡ ({it['area_pyeong']}평) | "
+              f"거래금액 {it['price']:,}만 | 평당가 {it['price_per_pyeong']:,}만 | "
+              f"{it['floor']}층 | {it['sigungu']} {it['dong']}")
+    if not rw_feb:
+        print("    ⚠️ 2026년 2월 데이터 없음 — CSV 파일에 2월 데이터가 포함되어 있는지 확인하세요!")
+    print()
 
     # ── Step 2: 대시보드 생성 ──
     print("Step 2: 대시보드 생성\n")
