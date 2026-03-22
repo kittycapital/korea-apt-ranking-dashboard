@@ -360,8 +360,12 @@ def get_months(n):
     months = set()
     today = datetime.today()
     for i in range(n):
-        d = today.replace(day=1) - timedelta(days=30*i)
-        months.add(d.strftime('%Y%m'))
+        y = today.year
+        m = today.month - i
+        while m <= 0:
+            m += 12
+            y -= 1
+        months.add(f"{y}{m:02d}")
     return sorted(months)
 
 
