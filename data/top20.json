@@ -208,6 +208,22 @@
     "region_code": "11680"
   },
   {
+    "apt_name": "나인원한남",
+    "sido": "서울시",
+    "sigungu": "용산구",
+    "dong": "한남동",
+    "area_m2": 244.3478,
+    "area_pyeong": 74.0,
+    "price": 1565000,
+    "price_per_pyeong": 21136,
+    "deal_year": "2026",
+    "deal_month": "03",
+    "deal_day": "23",
+    "floor": "4",
+    "build_year": "2019",
+    "region_code": "11170"
+  },
+  {
     "apt_name": "한남더힐",
     "sido": "서울시",
     "sigungu": "용산구",
@@ -302,21 +318,5 @@
     "floor": "27",
     "build_year": "2010",
     "region_code": "11650"
-  },
-  {
-    "apt_name": "신현대12차",
-    "sido": "서울시",
-    "sigungu": "강남구",
-    "dong": "압구정동",
-    "area_m2": 121.18,
-    "area_pyeong": 36.7,
-    "price": 730000,
-    "price_per_pyeong": 19880,
-    "deal_year": "2025",
-    "deal_month": "10",
-    "deal_day": "16",
-    "floor": "12",
-    "build_year": "1982",
-    "region_code": "11680"
   }
 ]
