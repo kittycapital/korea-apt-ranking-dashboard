@@ -176,22 +176,6 @@
     "region_code": "11650"
   },
   {
-    "apt_name": "반포르엘",
-    "sido": "서울시",
-    "sigungu": "서초구",
-    "dong": "잠원동",
-    "area_m2": 84.3465,
-    "area_pyeong": 25.6,
-    "price": 550000,
-    "price_per_pyeong": 21518,
-    "deal_year": "2025",
-    "deal_month": "10",
-    "deal_day": "18",
-    "floor": "20",
-    "build_year": "2022",
-    "region_code": "11650"
-  },
-  {
     "apt_name": "신현대9차",
     "sido": "서울시",
     "sigungu": "강남구",
@@ -317,6 +301,22 @@
     "deal_day": "03",
     "floor": "27",
     "build_year": "2010",
+    "region_code": "11650"
+  },
+  {
+    "apt_name": "서초그랑자이",
+    "sido": "서울시",
+    "sigungu": "서초구",
+    "dong": "서초동",
+    "area_m2": 59.98,
+    "area_pyeong": 18.2,
+    "price": 355000,
+    "price_per_pyeong": 19532,
+    "deal_year": "2026",
+    "deal_month": "01",
+    "deal_day": "26",
+    "floor": "34",
+    "build_year": "2021",
     "region_code": "11650"
   }
 ]
