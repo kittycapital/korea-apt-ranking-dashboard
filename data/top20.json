@@ -304,19 +304,19 @@
     "region_code": "11650"
   },
   {
-    "apt_name": "서초그랑자이",
+    "apt_name": "한양1차(영동한양)",
     "sido": "서울시",
-    "sigungu": "서초구",
-    "dong": "서초동",
-    "area_m2": 59.98,
-    "area_pyeong": 18.2,
-    "price": 355000,
-    "price_per_pyeong": 19532,
+    "sigungu": "강남구",
+    "dong": "압구정동",
+    "area_m2": 91.21,
+    "area_pyeong": 27.6,
+    "price": 540000,
+    "price_per_pyeong": 19537,
     "deal_year": "2026",
-    "deal_month": "01",
-    "deal_day": "26",
-    "floor": "34",
-    "build_year": "2021",
-    "region_code": "11650"
+    "deal_month": "04",
+    "deal_day": "20",
+    "floor": "5",
+    "build_year": "1977",
+    "region_code": "11680"
   }
 ]
