@@ -1,5 +1,21 @@
 [
   {
+    "apt_name": "에테르노청담",
+    "sido": "서울시",
+    "sigungu": "강남구",
+    "dong": "청담동",
+    "area_m2": 231.2798,
+    "area_pyeong": 70.1,
+    "price": 2180000,
+    "price_per_pyeong": 31105,
+    "deal_year": "2026",
+    "deal_month": "05",
+    "deal_day": "15",
+    "floor": "10",
+    "build_year": "2023",
+    "region_code": "11680"
+  },
+  {
     "apt_name": "아크로리버뷰신반포",
     "sido": "서울시",
     "sigungu": "서초구",
@@ -302,21 +318,5 @@
     "floor": "11",
     "build_year": "1978",
     "region_code": "11710"
-  },
-  {
-    "apt_name": "개포주공6단지",
-    "sido": "서울시",
-    "sigungu": "강남구",
-    "dong": "개포동",
-    "area_m2": 60.13,
-    "area_pyeong": 18.2,
-    "price": 337000,
-    "price_per_pyeong": 18495,
-    "deal_year": "2026",
-    "deal_month": "01",
-    "deal_day": "02",
-    "floor": "2",
-    "build_year": "1983",
-    "region_code": "11680"
   }
 ]
