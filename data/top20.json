@@ -224,6 +224,22 @@
     "region_code": "11710"
   },
   {
+    "apt_name": "개포래미안포레스트",
+    "sido": "서울시",
+    "sigungu": "강남구",
+    "dong": "개포동",
+    "area_m2": 59.92,
+    "area_pyeong": 18.2,
+    "price": 308000,
+    "price_per_pyeong": 16963,
+    "deal_year": "2026",
+    "deal_month": "07",
+    "deal_day": "10",
+    "floor": "19",
+    "build_year": "2020",
+    "region_code": "11680"
+  },
+  {
     "apt_name": "개포주공7단지",
     "sido": "서울시",
     "sigungu": "강남구",
@@ -301,22 +317,6 @@
     "deal_day": "11",
     "floor": "19",
     "build_year": "2023",
-    "region_code": "11680"
-  },
-  {
-    "apt_name": "도곡렉슬",
-    "sido": "서울시",
-    "sigungu": "강남구",
-    "dong": "도곡동",
-    "area_m2": 59.9818,
-    "area_pyeong": 18.2,
-    "price": 290000,
-    "price_per_pyeong": 15955,
-    "deal_year": "2026",
-    "deal_month": "06",
-    "deal_day": "27",
-    "floor": "14",
-    "build_year": "2006",
     "region_code": "11680"
   }
 ]
