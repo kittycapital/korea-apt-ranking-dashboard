@@ -240,6 +240,22 @@
     "region_code": "11680"
   },
   {
+    "apt_name": "개포자이프레지던스",
+    "sido": "서울시",
+    "sigungu": "강남구",
+    "dong": "개포동",
+    "area_m2": 59.9751,
+    "area_pyeong": 18.2,
+    "price": 310500,
+    "price_per_pyeong": 17085,
+    "deal_year": "2026",
+    "deal_month": "07",
+    "deal_day": "19",
+    "floor": "23",
+    "build_year": "2023",
+    "region_code": "11680"
+  },
+  {
     "apt_name": "리센츠",
     "sido": "서울시",
     "sigungu": "송파구",
@@ -302,21 +318,5 @@
     "floor": "25",
     "build_year": "2020",
     "region_code": "11650"
-  },
-  {
-    "apt_name": "개포주공5단지",
-    "sido": "서울시",
-    "sigungu": "강남구",
-    "dong": "개포동",
-    "area_m2": 83.17,
-    "area_pyeong": 25.2,
-    "price": 414000,
-    "price_per_pyeong": 16427,
-    "deal_year": "2026",
-    "deal_month": "02",
-    "deal_day": "02",
-    "floor": "3",
-    "build_year": "1983",
-    "region_code": "11680"
   }
 ]
