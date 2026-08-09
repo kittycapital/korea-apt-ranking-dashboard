@@ -96,6 +96,22 @@
     "region_code": "11680"
   },
   {
+    "apt_name": "반포르엘",
+    "sido": "서울시",
+    "sigungu": "서초구",
+    "dong": "잠원동",
+    "area_m2": 59.9446,
+    "area_pyeong": 18.2,
+    "price": 354000,
+    "price_per_pyeong": 19488,
+    "deal_year": "2026",
+    "deal_month": "08",
+    "deal_day": "03",
+    "floor": "13",
+    "build_year": "2022",
+    "region_code": "11650"
+  },
+  {
     "apt_name": "신현대11차",
     "sido": "서울시",
     "sigungu": "강남구",
@@ -301,22 +317,6 @@
     "deal_day": "18",
     "floor": "7",
     "build_year": "2006",
-    "region_code": "11680"
-  },
-  {
-    "apt_name": "아이파크",
-    "sido": "서울시",
-    "sigungu": "강남구",
-    "dong": "삼성동",
-    "area_m2": 145.046,
-    "area_pyeong": 44.0,
-    "price": 665000,
-    "price_per_pyeong": 15130,
-    "deal_year": "2026",
-    "deal_month": "06",
-    "deal_day": "01",
-    "floor": "9",
-    "build_year": "2004",
     "region_code": "11680"
   }
 ]
